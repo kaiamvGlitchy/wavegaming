@@ -128,19 +128,28 @@
             background-repeat: repeat-x;
             z-index: -1;
         }
-        /* Replace your current .game-grid CSS with this */
 .game-grid {
     display: flex;
-    overflow-x: auto;
-    gap: 2rem;
+    flex-wrap: nowrap; /* Keeps all game cards in a row */
+    overflow-x: auto; /* Enables side scrolling */
+    gap: 2rem; /* Space between game cards */
     padding: 2rem;
     margin: 3rem 0;
-    scroll-behavior: smooth; /* For smooth scrolling */
+    scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.2);
+    white-space: nowrap; /* Prevents line breaks */
 }
 
-/* Add these styles for scrollbar customization */
+/* Ensures game cards don’t shrink and are properly aligned */
+.game-card {
+    flex-shrink: 0; /* Prevents shrinking */
+    width: 320px; /* Fixed width */
+    min-width: 320px; /* Ensures all cards are the same size */
+    max-width: 320px;
+}
+
+/* Custom scrollbar for WebKit browsers */
 .game-grid::-webkit-scrollbar {
     height: 8px;
 }
@@ -153,6 +162,13 @@
 .game-grid::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
+}
+
+/* Optional: Hide scrollbar on mobile */
+@media (max-width: 768px) {
+    .game-grid::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 /* Modify the game card to have a fixed width */
@@ -178,32 +194,43 @@
     
     <main>
         
-    
-        <div class="game-grid">
-            <!-- Game Card 1 -->
-            <div class="game-card">
-                <img src="sdfbc.webp" alt="Space dodgers" class="game-cover">
-                <div class="game-info">
-                    <h2 class="game-title">Space dodgers</h2>
-                    <p class="game-desc">Navigate through space dodging asteroids,compete with friends for the higher highscore.</p>
-                    <a href="spacedodgers/index.html" class="play-button">Play Now</a>
+        <main>
+            <div class="game-grid">
+                <!-- Game Card 1 -->
+                <div class="game-card">
+                    <img src="sdfbc.png" alt="Space dodgers" class="game-cover">
+                    <div class="game-info">
+                        <h2 class="game-title">Space Dodgers</h2>
+                        <p class="game-desc">fly through space dodging asteroids.</p>
+                        <a href="spacedodgers/index.html" class="play-button">Play Now</a>
+                    </div>
+                </div>
+                
+        
+                <!-- Game Card 2 -->
+                <div class="game-card">
+                    <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="flappybird" class="game-cover">
+                    <div class="game-info">
+                        <h2 class="game-title">Flappy Bird</h2>
+                        <p class="game-desc">Fly through the pipes.</p>
+                        <a href="flappybird/index.html" class="play-button">Play Now</a>
+                    </div>
+                </div>
+        
+                <!-- Game Card 3 -->
+                <div class="game-card">
+                    <img src="gtm.jpg" alt="guess the number" class="game-cover">
+                    <div class="game-info">
+                        <h2 class="game-title">guess the number</h2>
+                        <p class="game-desc">guess the number challenges!</p>
+                        <a href="guessthenum/index.html" class="play-button">Play Now</a>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Game Card 2 -->
-            <div class="game-card">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="flappybird" class="game-cover">
-                <div class="game-info">
-                    <h2 class="game-title">flappy bird</h2>
-                    <p class="game-desc">fly through the pipes dodging them,just like the orignal.</p>
-                    <a href="flappybird/index.html" class="play-button">Play Now</a>
-                </div>
-            </div>
-        </div>
-    </main>
-    
-    <footer>
-        <p>&copy; 2025 WAVE Gaming. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+        </main>
+        
+        <!-- Footer stays at the bottom -->
+        <footer>
+            <p>&copy; 2025 WAVE Gaming. All rights reserved.</p>
+        </footer>
+        

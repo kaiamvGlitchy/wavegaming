@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 guess the number 🔥</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        :root {
+            --primary: #ffcc00;
+            --secondary: #ff6b6b;
+            --tertiary: #4ecdc4;
+            --background: #111;
+            --text: #fff;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            background-color: var(--background);
+            color: var(--text);
+            padding: 20px;
+            margin: 0;
+            overflow-x: hidden;
+            transition: background-color 0.5s;
+        }
+        .close-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    border: 4px solid white;
+    cursor: pointer;
+    z-index: 100;
+    font-family: 'Press Start 2P', cursive;
+    outline: none;
+    display: flex;
+    justify-content: center; /* Centers the X horizontally */
+    align-items: center; /* Centers the X vertically */
+    padding: 0; /* Remove padding to prevent the X from shifting */
+}
+
+
+        .close-btn:hover {
+            background-color: #FF0000; /* Red on hover */
+        }
+
+
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-shadow: 0px 0px 10px var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-size: 0.8rem;
+        }
+
+        input {
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 3px solid var(--primary);
+            background: black;
+            color: white;
+            outline: none;
+            text-align: center;
+            border-radius: 5px;
+            width: 150px;
+            margin-right: 10px;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        button {
+            padding: 15px 20px;
+            font-size: 1rem;
+            background-color: var(--primary);
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            border-radius: 5px;
+            color: black;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        button:hover {
+            background-color: #ff9900;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1rem;
+            min-height: 60px;
+            color: var(--secondary);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            padding: 10px;
+            border: 2px solid var(--primary);
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            min-width: 150px;
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        .flash {
+            animation: flash 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0px); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes flash {
+            0% { background-color: var(--background); }
+            50% { background-color: var(--secondary); }
+            100% { background-color: var(--background); }
+        }
+
+        .difficulty-selector {
+            margin: 20px 0;
+        }
+
+        .difficulty-btn {
+            margin: 0 5px;
+            padding: 10px 15px;
+            font-size: 0.7rem;
+        }
+
+        #easy-btn {
+            background-color: #4ecdc4;
+        }
+
+        #medium-btn {
+            background-color: #ffcc00;
+        }
+
+        #hard-btn {
+            background-color: #ff6b6b;
+        }
+
+        #extreme-btn {
+            background-color: #9b59b6;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #333;
+            border-radius: 5px;
+            margin: 10px 0;
+            height: 20px;
+        }
+
+        #time-bar {
+            height: 100%;
+            background-color: var(--tertiary);
+            border-radius: 5px;
+            transition: width 1s linear;
+            width: 100%;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 0.7rem;
+        }
+
+        .hint-container {
+            margin: 15px 0;
+        }
+
+        #hint-btn {
+            background-color: var(--tertiary);
+            font-size: 0.8rem;
+            padding: 10px;
+        }
+
+        .streak-bonus {
+            position: absolute;
+            font-size: 1.5rem;
+            color: gold;
+            animation: float-up 2s forwards;
+            opacity: 0;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+
+        .history-container {
+            margin-top: 20px;
+            max-height: 100px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .history-item {
+            font-size: 0.7rem;
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        .history-item.high {
+            color: var(--secondary);
+        }
+
+        .history-item.low {
+            color: var(--tertiary);
+        }
+
+        .powerup-container {
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .powerup-btn {
+            font-size: 0.7rem;
+            padding: 8px;
+            background-color: #9b59b6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #222;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+            border: 3px solid var(--primary);
+            animation: modal-appear 0.5s;
+        }
+
+        @keyframes modal-appear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0;
+        }
+
+        #high-score-display {
+            color: var(--primary);
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+
+        .range-indicator {
+            margin: 15px 0;
+            font-size: 0.8rem;
+            color: var(--tertiary);
+        }
+
+        /* Start screen styles */
+        #start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        #game-screen {
+            display: none;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .mode-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 3px solid var(--primary);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            width: 200px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+        }
+
+        .mode-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .mode-description {
+            font-size: 0.6rem;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .mode-stats {
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .modes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+            max-width: 900px;
+        }
+
+        #easy-card {
+            border-color: #4ecdc4;
+        }
+
+        #medium-card {
+            border-color: #ffcc00;
+        }
+
+        #hard-card {
+            border-color: #ff6b6b;
+        }
+
+        #extreme-card {
+            border-color: #9b59b6;
+        }
+
+        .start-btn {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background-color: var(--primary);
+            animation: pulse 1.5s infinite;
+        }
+
+        .difficulty-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        #instructions {
+            margin-top: 30px;
+            font-size: 0.7rem;
+            color: #aaa;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .selected-mode {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen">
+            <div class="logo">Guess the number</div>
+            <p class="subtitle">THE ULTIMATE GUESSING CHALLENGE</p>
+            <!-- Cross Button to Close or Redirect -->
+    <button class="close-btn" onclick="window.location.href='../main.html'">×</button>
+            
+            <div class="modes-container">
+                <div class="mode-card" id="easy-card" onclick="selectMode('easy')">
+                    <div class="mode-title">
+                        <span class="difficulty-indicator" style="background-color: #4ecdc4;"></span>
+                        EASY
+                    </div>
+                    <div class="mode-description">Perfect for beginners or casual play</div>
+                    <div class="mode-stats">
+                        <div>RANGE: 1-50</div>
+                        <div>GUESSES: 8</div>
+                        <div>TIME: 45s</div>
+                    </div>
+                </div>
+                
+                <div class="mode-card" id="medium-card" onclick="selectMode('medium')">
+                    <div class="mode-title">
+                        <span class="difficulty-indicator" style="background-color: #ffcc00;"></span>
+                        MEDIUM
+                    </div>
+                    <div class="mode-description">Balanced challenge for most players</div>
+                    <div class="mode-stats">
+                        <div>RANGE: 1-100</div>
+                        <div>GUESSES: 5</div>
+                        <div>TIME: 30s</div>
+                    </div>
+                </div>
+                
+                <div class="mode-card" id="hard-card" onclick="selectMode('hard')">
+                    <div class="mode-title">
+                        <span class="difficulty-indicator" style="background-color: #ff6b6b;"></span>
+                        HARD
+                    </div>
+                    <div class="mode-description">For experienced players seeking a challenge</div>
+                    <div class="mode-stats">
+                        <div>RANGE: 1-200</div>
+                        <div>GUESSES: 4</div>
+                        <div>TIME: 20s</div>
+                    </div>
+                </div>
+                
+                <div class="mode-card" id="extreme-card" onclick="selectMode('extreme')">
+                    <div class="mode-title">
+                        <span class="difficulty-indicator" style="background-color: #9b59b6;"></span>
+                        EXTREME
+                    </div>
+                    <div class="mode-description">Only for the true Number Masters!</div>
+                    <div class="mode-stats">
+                        <div>RANGE: 1-500</div>
+                        <div>GUESSES: 3</div>
+                        <div>TIME: 15s</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="start-btn" onclick="startGame()">START GAME</button>
+            
+            <div id="instructions">
+                <p>HOW TO PLAY:</p>
+                <p>Guess the secret number within the given range. After each guess, you'll be told if your guess was too high or too low. Use hints and powerups strategically to improve your chances!</p>
+                <p>Build a streak by winning consecutive games to earn bonus points!</p>
+            </div>
+            
+            <div id="high-score-display">HIGH SCORE: 0</div>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen">
+            <h1>Guess the number</h1>
+            <p class="subtitle">THE ULTIMATE GUESSING CHALLENGE</p>
+            
+            <div class="range-indicator" id="range-display">GUESS BETWEEN 1-100</div>
+            
+            <div class="progress-container">
+                <div id="time-bar"></div>
+            </div>
+            
+            <div class="game-info">
+                <div class="info-box" id="timer">⏳ TIME: 30s</div>
+                <div class="info-box" id="guessesLeft">❤️ GUESSES: 5</div>
+                <div class="info-box" id="score-display">🏆 SCORE: 0</div>
+            </div>
+            
+            <input type="number" id="userGuess" min="1" max="100" placeholder="Enter guess">
+            <button id="guessBtn" onclick="checkGuess()">SUBMIT</button>
+            
+            <div class="hint-container">
+                <button id="hint-btn" onclick="getHint()">USE HINT (-50 PTS)</button>
+            </div>
+            
+            <div class="powerup-container">
+                <button class="powerup-btn" onclick="usePowerup('extraTime')">+10 SEC (-100 PTS)</button>
+                <button class="powerup-btn" onclick="usePowerup('extraGuess')">+1 GUESS (-100 PTS)</button>
+                <button class="powerup-btn" onclick="usePowerup('narrowRange')">NARROW RANGE (-150 PTS)</button>
+            </div>
+
+            <p id="message"></p>
+            
+            <div class="history-container" id="guess-history">
+                <p>GUESS HISTORY:</p>
+            </div>
+            
+            <div class="stats">
+                <div>🔥 STREAK: <span id="streak">0</span></div>
+                <div>🎯 BEST STREAK: <span id="best-streak">0</span></div>
+                <div>🎮 GAMES: <span id="games-played">0</span></div>
+            </div>
+            
+            <button onclick="returnToMenu()" style="margin-top: 20px; background-color: #555;">BACK TO MENU</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="game-over-modal">
+        <div class="modal-content">
+            <h2 id="result-title">GAME OVER</h2>
+            <p id="result-message"></p>
+            <p id="final-score"></p>
+            <button onclick="restartGame()">PLAY AGAIN</button>
+            <button onclick="returnToMenu()">MAIN MENU</button>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        let randomNumber;
+        let minRange = 1;
+        let maxRange = 100;
+        let attempts;
+        let maxAttempts;
+        let timeLeft;
+        let maxTime;
+        let timer;
+        let score = 0;
+        let highScore = 0;
+        let streak = 0;
+        let bestStreak = 0;
+        let gamesPlayed = 0;
+        let difficulty = 'medium';
+        let guessHistory = [];
+        let gameActive = false;
+        let hintUsed = false;
+        let selectedMode = null;
+
+        
+
+        // Funny messages for wrong guesses
+        const funnyMessages = [
+            "Nah, that's not it chief. 🤡",
+            "LMAO, try again. 😂",
+            "You sure about that? 🤔",
+            "Bruh... no. ❌",
+            "Almost! But still wrong. 💀",
+            "You're gonna lose 😂",
+            "You're not him 🙄",
+            "Quit frfr 🏳️",
+            "Get OUTTT! 🚪",
+            "That's embarrassing 😬",
+            "My grandma guesses better 👵",
+            "Did you even try? 🤦‍♂️",
+            "Skill issue detected 📉",
+            "Not even close! 🔍",
+            "Are you just guessing randomly? 🎲"
+        ];
+
+        // Select game mode
+        function selectMode(mode) {
+            sounds.click.play();
+            selectedMode = mode;
+            
+            // Remove selected class from all cards
+            document.querySelectorAll('.mode-card').forEach(card => {
+                card.classList.remove('selected-mode');
+            });
+            
+            // Add selected class to chosen card
+            document.getElementById(`${mode}-card`).classList.add('selected-mode');
+            
+            // Update difficulty
+            difficulty = mode;
+        }
+
+        // Start the game
+        function startGame() {
+            if (!selectedMode) {
+                alert("Please select a difficulty mode first!");
+                return;
+            }
+            
+            sounds.start.play();
+            
+            // Hide start screen, show game screen
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
+            
+            // Initialize game with selected difficulty
+            initGame();
+            startTimer();
+        }
+
+        // Return to main menu
+        function returnToMenu() {
+            sounds.click.play();
+            
+            // Clear any running timer
+            clearInterval(timer);
+            
+            // Hide game screen, show start screen
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'flex';
+            
+            // Hide modal if open
+            document.getElementById('game-over-modal').style.display = 'none';
+            
+            // Update high score display on start screen
+            document.getElementById('high-score-display').innerText = `HIGH SCORE: ${highScore}`;
+        }
+
+        // Initialize the game
+        function initGame() {
+            // Set difficulty parameters
+            switch(difficulty) {
+                case 'easy':
+                    maxAttempts = 8;
+                    maxTime = 45;
+                    minRange = 1;
+                    maxRange = 50;
+                    break;
+                case 'medium':
+                    maxAttempts = 5;
+                    maxTime = 30;
+                    minRange = 1;
+                    maxRange = 100;
+                    break;
+                case 'hard':
+                    maxAttempts = 4;
+                    maxTime = 20;
+                    minRange = 1;
+                    maxRange = 200;
+                    break;
+                case 'extreme':
+                    maxAttempts = 3;
+                    maxTime = 15;
+                    minRange = 1;
+                    maxRange = 500;
+                    break;
+            }
+            
+            randomNumber = Math.floor(Math.random() * (maxRange - minRange + 1)) + minRange;
+            attempts = maxAttempts;
+            timeLeft = maxTime;
+            guessHistory = [];
+            hintUsed = false;
+            gameActive = true;
+            
+            // Update UI
+            document.getElementById("userGuess").min = minRange;
+            document.getElementById("userGuess").max = maxRange;
+            document.getElementById("range-display").innerText = `GUESS BETWEEN ${minRange}-${maxRange}`;
+            document.getElementById("timer").innerText = `⏳ TIME: ${timeLeft}s`;
+            document.getElementById("guessesLeft").innerText = `❤️ GUESSES: ${attempts}`;
+            document.getElementById("message").innerHTML = "";
+            document.getElementById("guess-history").innerHTML = "<p>GUESS HISTORY:</p>";
+            document.getElementById("time-bar").style.width = "100%";
+            
+            // Enable input and buttons
+            document.getElementById("userGuess").disabled = false;
+            document.getElementById("guessBtn").disabled = false;
+            document.getElementById("hint-btn").disabled = false;
+            
+            // Clear any existing timer
+            clearInterval(timer);
+        }
+
+        // Start the timer
+        function startTimer() {
+            // Reset the time bar
+            document.getElementById("time-bar").style.width = "100%";
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                
+                // Update timer display
+                document.getElementById("timer").innerText = `⏳ TIME: ${timeLeft}s`;
+                
+                // Update time bar
+                const percentage = (timeLeft / maxTime) * 100;
+                document.getElementById("time-bar").style.width = `${percentage}%`;
+                
+                // Change color based on time left
+                if (timeLeft <= maxTime * 0.25) {
+                    document.getElementById("time-bar").style.backgroundColor = "#ff6b6b";
+                } else if (timeLeft <= maxTime * 0.5) {
+                    document.getElementById("time-bar").style.backgroundColor = "#ffcc00";
+                }
+                
+                // Flash when time is running out
+                if (timeLeft <= 5) {
+                    document.body.classList.add("flash");
+                    setTimeout(() => document.body.classList.remove("flash"), 500);
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    endGame(false, "TIME'S UP!");
+                }
+            }, 1000);
+        }
+
+        // Check the user's guess
+        function checkGuess() {
+            if (!gameActive) return;
+            
+            sounds.click.play();
+
+            let userGuess = parseInt(document.getElementById("userGuess").value);
+            let message = document.getElementById("message");
+            let inputField = document.getElementById("userGuess");
+
+            // Validate input
+            if (isNaN(userGuess) || userGuess < minRange || userGuess > maxRange) {
+                message.innerHTML = `❌ ENTER A VALID NUMBER (${minRange}-${maxRange})!`;
+                inputField.classList.add("shake");
+                setTimeout(() => inputField.classList.remove("shake"), 300);
+                return;
+            }
+
+            // Decrease attempts
+            attempts--;
+            document.getElementById("guessesLeft").innerText = `❤️ GUESSES: ${attempts}`;
+            
+            // Add to guess history
+            addToHistory(userGuess);
+            
+            // Clear input field for next guess
+            inputField.value = "";
+            
+            // Check guess
+            if (userGuess < randomNumber) {
+                message.innerHTML = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+                message.innerHTML += "<br>TOO LOW! ⬆️";
+                inputField.classList.add("shake");
+                sounds.wrong.play();
+                setTimeout(() => inputField.classList.remove("shake"), 300);
+            } else if (userGuess > randomNumber) {
+                message.innerHTML = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+                message.innerHTML += "<br>TOO HIGH! ⬇️";
+                inputField.classList.add("shake");
+                sounds.wrong.play();
+                setTimeout(() => inputField.classList.remove("shake"), 300);
+            } else {
+                // Correct guess!
+                sounds.win.play();
+                
+                // Calculate score based on difficulty, time left, and attempts
+                const difficultyMultiplier = {
+                    'easy': 1,
+                    'medium': 2,
+                    'hard': 3,
+                    'extreme': 5
+                };
+                
+                const baseScore = 1000;
+                const timeBonus = timeLeft * 10;
+                const attemptBonus = attempts * 50;
+                const diffBonus = difficultyMultiplier[difficulty] * 100;
+                
+                const roundScore = baseScore + timeBonus + attemptBonus + diffBonus;
+                
+                // Apply streak bonus if applicable
+                let streakBonus = 0;
+                streak++;
+                
+                if (streak > 1) {
+                    streakBonus = streak * 50;
+                    showStreakBonus(streakBonus);
+                }
+                
+                // Update best streak
+                if (streak > bestStreak) {
+                    bestStreak = streak;
+                    document.getElementById("best-streak").innerText = bestStreak;
+                }
+                
+                // Update total score
+                score += roundScore + streakBonus;
+                
+                // Update high score if needed
+                if (score > highScore) {
+                    highScore = score;
+                    document.getElementById("high-score-display").innerText = `HIGH SCORE: ${highScore}`;
+                }
+                
+                // End game with win
+                endGame(true, `YOU WIN! THE NUMBER WAS ${randomNumber}!`);
+                
+                // Show confetti
+                createConfetti();
+            }
+
+            // Check if out of guesses
+            if (attempts <= 0 && userGuess !== randomNumber) {
+                endGame(false, `NO GUESSES LEFT! THE NUMBER WAS ${randomNumber}.`);
+            }
+        }
+
+        // Add guess to history
+        function addToHistory(guess) {
+            const historyContainer = document.getElementById("guess-history");
+            const historyItem = document.createElement("div");
+            historyItem.classList.add("history-item");
+            
+            if (guess < randomNumber) {
+                historyItem.classList.add("low");
+                historyItem.innerText = `${guess} - TOO LOW ⬆️`;
+            } else if (guess > randomNumber) {
+                historyItem.classList.add("high");
+                historyItem.innerText = `${guess} - TOO HIGH ⬇️`;
+            } else {
+                historyItem.style.color = "gold";
+                historyItem.innerText = `${guess} - CORRECT! 🎯`;
+            }
+            
+            historyContainer.appendChild(historyItem);
+            historyContainer.scrollTop = historyContainer.scrollHeight;
+            
+            // Add to history array
+            guessHistory.push(guess);
+        }
+
+        // Get a hint
+        function getHint() {
+            if (!gameActive || hintUsed) return;
+            
+            // Check if player has enough points
+            if (score < 50) {
+                document.getElementById("message").innerHTML = "NOT ENOUGH POINTS FOR HINT!";
+                return;
+            }
+            
+            sounds.hint.play();
+            score -= 50;
+            document.getElementById("score-display").innerText = `🏆 SCORE: ${score}`;
+            
+            // Generate hint
+            let hint;
+            const randomHintType = Math.floor(Math.random() * 3);
+            
+            switch(randomHintType) {
+                case 0:
+                    // Even/Odd hint
+                    hint = randomNumber % 2 === 0 ? 
+                        "THE NUMBER IS EVEN 🔢" : 
+                        "THE NUMBER IS ODD 🔢";
+                    break;
+                case 1:
+                    // Digit sum hint
+                    const digitSum = String(randomNumber).split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+                    hint = `THE SUM OF DIGITS IS ${digitSum} 🧮`;
+                    break;
+                case 2:
+                    // Range narrowing
+                    const rangeSize = maxRange - minRange;
+                    const narrowedMin = Math.max(minRange, randomNumber - Math.floor(rangeSize * 0.2));
+                    const narrowedMax = Math.min(maxRange, randomNumber + Math.floor(rangeSize * 0.2));
+                    hint = `THE NUMBER IS BETWEEN ${narrowedMin} AND ${narrowedMax} 🔍`;
+                    break;
+            }
+            
+            document.getElementById("message").innerHTML = `HINT: ${hint}`;
+            document.getElementById("hint-btn").disabled = true;
+            hintUsed = true;
+        }
+
+        // Use powerup
+        function usePowerup(type) {
+            if (!gameActive) return;
+            
+            let cost = 0;
+            let message = "";
+            
+            switch(type) {
+                case 'extraTime':
+                    cost = 100;
+                    if (score >= cost) {
+                        timeLeft += 10;
+                        message = "+10 SECONDS ADDED! ⏱️";
+                    }
+                    break;
+                case 'extraGuess':
+                    cost = 100;
+                    if (score >= cost) {
+                        attempts += 1;
+                        message = "+1 GUESS ADDED! ❤️";
+                        document.getElementById("guessesLeft").innerText = `❤️ GUESSES: ${attempts}`;
+                    }
+                    break;
+                case 'narrowRange':
+                    cost = 150;
+                    if (score >= cost) {
+                        // Narrow the range by 40%
+                        const rangeSize = maxRange - minRange;
+                        minRange = Math.max(minRange, randomNumber - Math.floor(rangeSize * 0.3));
+                        maxRange = Math.min(maxRange, randomNumber + Math.floor(rangeSize * 0.3));
+                        
+                        document.getElementById("range-display").innerText = `GUESS BETWEEN ${minRange}-${maxRange}`;
+                        document.getElementById("userGuess").min = minRange;
+                        document.getElementById("userGuess").max = maxRange;
+                        
+                        message = `RANGE NARROWED TO ${minRange}-${maxRange}! 🔍`;
+                    }
+                    break;
+            }
+            
+            if (score >= cost) {
+                sounds.powerup.play();
+                score -= cost;
+                document.getElementById("score-display").innerText = `🏆 SCORE: ${score}`;
+                document.getElementById("message").innerHTML = message;
+            } else {
+                document.getElementById("message").innerHTML = "NOT ENOUGH POINTS!";
+            }
+        }
+
+        // Show streak bonus animation
+        function showStreakBonus(bonus) {
+            const bonusElement = document.createElement("div");
+            bonusElement.classList.add("streak-bonus");
+            bonusElement.innerText = `STREAK BONUS: +${bonus}`;
+            
+            // Position randomly within the game container
+            const container = document.querySelector(".game-container");
+            const containerRect = container.getBoundingClientRect();
+            
+            bonusElement.style.left = `${Math.random() * (containerRect.width - 150)}px`;
+            bonusElement.style.top = `${Math.random() * (containerRect.height - 100) + 100}px`;
+            
+            container.appendChild(bonusElement);
+            
+            // Remove after animation completes
+            setTimeout(() => {
+                container.removeChild(bonusElement);
+            }, 2000);
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            const container = document.querySelector(".game-container");
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement("div");
+                confetti.classList.add("confetti");
+                
+                // Random position, color, and size
+                const left = Math.random() * 100;
+                const width = Math.random() * 10 + 5;
+                const height = Math.random() * 10 + 5;
+                const backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                
+                confetti.style.left = `${left}%`;
+                confetti.style.top = "-20px";
+                confetti.style.width = `${width}px`;
+                confetti.style.height = `${height}px`;
+                confetti.style.backgroundColor = backgroundColor;
+                confetti.style.borderRadius = `${Math.random() > 0.5 ? "50%" : "0"}`;
+                
+                container.appendChild(confetti);
+                
+                // Animate falling
+                const animationDuration = Math.random() * 3 + 2;
+                const keyframes = [
+                    { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translateY(${Math.random() * 500 + 500}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ];
+                
+                confetti.animate(keyframes, {
+                    duration: animationDuration * 1000,
+                    easing: 'cubic-bezier(0.37, 0, 0.63, 1)',
+                    fill: 'forwards'
+                });
+                
+                // Remove after animation
+                setTimeout(() => {
+                    container.removeChild(confetti);
+                }, animationDuration * 1000);
+            }
+        }
+
+        // End the game
+        function endGame(isWin, message) {
+            clearInterval(timer);
+            gameActive = false;
+            
+            // Update games played
+            gamesPlayed++;
+            document.getElementById("games-played").innerText = gamesPlayed;
+            
+            // Reset streak if lost
+            if (!isWin) {
+                streak = 0;
+                sounds.gameOver.play();
+            }
+            
+            document.getElementById("streak").innerText = streak;
+            
+            // Update score display
+            document.getElementById("score-display").innerText = `🏆 SCORE: ${score}`;
+            
+            // Show modal with results
+            const modal = document.getElementById("game-over-modal");
+            const resultTitle = document.getElementById("result-title");
+            const resultMessage = document.getElementById("result-message");
+            const finalScore = document.getElementById("final-score");
+            
+            resultTitle.innerText = isWin ? "VICTORY!" : "GAME OVER";
+            resultMessage.innerText = message;
+            finalScore.innerText = `SCORE: ${score}`;
+            
+            modal.style.display = "flex";
+            
+            // Disable game controls
+            document.getElementById("userGuess").disabled = true;
+            document.getElementById("guessBtn").disabled = true;
+            document.getElementById("hint-btn").disabled = true;
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById("game-over-modal").style.display = "none";
+        }
+
+        // Restart the game
+        function restartGame() {
+            closeModal();
+            initGame();
+            startTimer();
+        }
+
+        // Initialize the game on load
+        window.onload = function() {
+            // Load high score from local storage if available
+            const savedHighScore = localStorage.getItem("numberMasterHighScore");
+            if (savedHighScore) {
+                highScore = parseInt(savedHighScore);
+                document.getElementById("high-score-display").innerText = `HIGH SCORE: ${highScore}`;
+            }
+            
+            // Load best streak from local storage if available
+            const savedBestStreak = localStorage.getItem("numberMasterBestStreak");
+            if (savedBestStreak) {
+                bestStreak = parseInt(savedBestStreak);
+                document.getElementById("best-streak").innerText = bestStreak;
+            }
+            
+            // Load games played from local storage if available
+            const savedGamesPlayed = localStorage.getItem("numberMasterGamesPlayed");
+            if (savedGamesPlayed) {
+                gamesPlayed = parseInt(savedGamesPlayed);
+                document.getElementById("games-played").innerText = gamesPlayed;
+            }
+            
+            // Add event listener for Enter key
+            document.getElementById("userGuess").addEventListener("keyup", function(event) {
+                if (event.key === "Enter") {
+                    checkGuess();
+                }
+            });
+        };
+        
+        // Save stats to local storage when window is closed
+        window.onbeforeunload = function() {
+            localStorage.setItem("numberMasterHighScore", highScore);
+            localStorage.setItem("numberMasterBestStreak", bestStreak);
+            localStorage.setItem("numberMasterGamesPlayed", gamesPlayed);
+        };
+    </script>
+</body>
+</html>
