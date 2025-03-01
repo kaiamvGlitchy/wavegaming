@@ -11,7 +11,6 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             transition: font-size 0.3s ease;
-            
         }
         
         body {
@@ -32,7 +31,6 @@
             font-weight: bold;
             letter-spacing: 8px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            margin-bottom: 0.5rem;
         }
         
         .tagline {
@@ -41,15 +39,22 @@
         }
         
         .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
             gap: 2rem;
-            max-width: 1200px;
-            margin: 3rem auto;
-            padding: 0 2rem;
+            padding: 2rem;
+            margin: 3rem 0;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
         }
         
         .game-card {
+            flex-shrink: 0;
+            width: 320px;
+            min-width: 320px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             overflow: hidden;
@@ -66,7 +71,6 @@
             width: 100%;
             height: 300px;
             object-fit: cover;
-            display: block;
         }
         
         .game-info {
@@ -93,144 +97,65 @@
             border-radius: 50px;
             font-weight: bold;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
         }
         
         .play-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.6);
         }
         
         footer {
             text-align: center;
             padding: 2rem;
             background-color: rgba(0, 0, 0, 0.3);
-            margin-top: 2rem;
         }
         
-        @media (max-width: 768px) {
-            .game-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .logo {
-                font-size: 2.5rem;
-            }
-        }
-        
-        .wave-animation {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-            background-repeat: repeat-x;
-            z-index: -1;
-        }
-.game-grid {
-    display: flex;
-    flex-wrap: nowrap; /* Keeps all game cards in a row */
-    overflow-x: auto; /* Enables side scrolling */
-    gap: 2rem; /* Space between game cards */
-    padding: 2rem;
-    margin: 3rem 0;
-    scroll-behavior: smooth;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.2);
-    white-space: nowrap; /* Prevents line breaks */
-}
-
-/* Ensures game cards don’t shrink and are properly aligned */
-.game-card {
-    flex-shrink: 0; /* Prevents shrinking */
-    width: 320px; /* Fixed width */
-    min-width: 320px; /* Ensures all cards are the same size */
-    max-width: 320px;
-}
-
-/* Custom scrollbar for WebKit browsers */
-.game-grid::-webkit-scrollbar {
-    height: 8px;
-}
-
-.game-grid::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-}
-
-.game-grid::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-}
-
-/* Optional: Hide scrollbar on mobile */
-@media (max-width: 768px) {
-    .game-grid::-webkit-scrollbar {
-        display: none;
-    }
-}
-
-/* Modify the game card to have a fixed width */
-.game-card {
-    max-width: 320px;
-    min-width: 320px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    flex-shrink: 0; /* Prevents the cards from shrinking */
-}
     </style>
 </head>
 <body>
-    <div class="wave-animation"></div>
-    
     <header>
         <div class="logo">WAVE</div>
         <div class="tagline">Ride the wave of endless gaming adventures</div>
     </header>
     
     <main>
-        
-        <main>
-            <div class="game-grid">
-                <!-- Game Card 1 -->
-                <div class="game-card">
-                    <img src="sdfbc.png" alt="Space dodgers" class="game-cover">
-                    <div class="game-info">
-                        <h2 class="game-title">Space Dodgers</h2>
-                        <p class="game-desc">fly through space dodging asteroids.</p>
-                        <a href="spacedodgers/index.html" class="play-button">Play Now</a>
-                    </div>
-                </div>
-                
-        
-                <!-- Game Card 2 -->
-                <div class="game-card">
-                    <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="flappybird" class="game-cover">
-                    <div class="game-info">
-                        <h2 class="game-title">Flappy Bird</h2>
-                        <p class="game-desc">Fly through the pipes.</p>
-                        <a href="flappybird/index.html" class="play-button">Play Now</a>
-                    </div>
-                </div>
-        
-                <!-- Game Card 3 -->
-                <div class="game-card">
-                    <img src="gtm.jpg" alt="guess the number" class="game-cover">
-                    <div class="game-info">
-                        <h2 class="game-title">guess the number</h2>
-                        <p class="game-desc">guess the number challenges!</p>
-                        <a href="guessthenum/index.html" class="play-button">Play Now</a>
-                    </div>
+        <div class="game-grid">
+            <div class="game-card">
+                <img src="sdfbc.png" alt="Space Dodgers" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Space Dodgers</h2>
+                    <p class="game-desc">Fly through space dodging asteroids.</p>
+                    <a href="spacedodgers/index.html" class="play-button">Play Now</a>
                 </div>
             </div>
-        </main>
-        
-        <!-- Footer stays at the bottom -->
-        <footer>
-            <p>&copy; 2025 WAVE Gaming. All rights reserved.</p>
-        </footer>
-        
+            <div class="game-card">
+                <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="Flappy Bird" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Flappy Bird</h2>
+                    <p class="game-desc">Fly through the pipes.</p>
+                    <a href="flappybird/index.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="gtm.jpg" alt="Guess the Number" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Guess the Number</h2>
+                    <p class="game-desc">Guess the number challenges!</p>
+                    <a href="guessthenum/index.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="colo.webp" alt="Draw a Circle" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Draw a Circle</h2>
+                    <p class="game-desc">Draw the most circular circle.</p>
+                    <a href="dpc/dpc.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 WAVE Gaming. All rights reserved.</p>
+    </footer>
+</body>
+</html>
