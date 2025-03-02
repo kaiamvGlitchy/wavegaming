@@ -1,885 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <!--adsense-->
-     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5484266396833706"
-     crossorigin="anonymous"></script>  
+    <link rel="icon" type="image/x-icon" href="favicon.PNG">
+    <!--adsense-->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5484266396833706"
+     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Number</title>
+    <title>WAVE - Gaming Portal</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-        :root {
-            --primary: #4361EE;
-            --secondary: #FF6B6B;
-            --accent: #4CC9F0;
-            --background: #F8F9FA;
-            --text: #212529;
-            --success: #4ECCA3;
-            --warning: #FFBE0B;
-            --card: #FFFFFF;
-        }
-
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .back-btn {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            background-color: var(--secondary);
-            color: white;
-            font-size: 20px;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .game-container {
-            margin-top: 20px;
-        }
-
-        h1 {
-            color: var(--primary);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .subtitle {
-            color: var(--secondary);
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 300;
-        }
-
-        input {
-            padding: 12px;
-            font-size: 1.2rem;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            background: white;
-            color: var(--text);
-            outline: none;
-            text-align: center;
-            width: 100%;
-            margin-bottom: 15px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        button {
-            padding: 12px 20px;
-            font-size: 1rem;
-            background-color: var(--primary);
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            transition: transform 0.2s, background-color 0.2s;
-            display: inline-block;
-        }
-
-        button:hover {
-            background-color: #3251d4;
-            transform: translateY(-2px);
-        }
-
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        #message {
-            margin: 20px 0;
-            font-size: 1.2rem;
-            min-height: 50px;
-            text-align: center;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .game-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .info-box {
-            padding: 15px;
-            background-color: var(--card);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            flex: 1;
-            min-width: 120px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .progress-container {
-            width: 100%;
-            background-color: #e9ecef;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            height: 12px;
-            overflow: hidden;
-        }
-
-        #time-bar {
-            height: 100%;
-            background-color: var(--accent);
-            border-radius: 8px;
-            transition: width 1s linear;
-            width: 100%;
-        }
-
-        .buttons-container {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .hint-btn {
-            background-color: var(--accent);
-        }
-
-        .powerup-btn {
-            background-color: var(--warning);
-        }
-
-        .mode-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-        }
-
-        .mode-card {
-            background-color: var(--card);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            width: 200px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-align: center;
-        }
-
-        .mode-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .mode-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .difficulty-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        #start-btn {
-            display: block;
-            margin: 30px auto;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            background-color: var(--success);
-        }
-
-        .range-display {
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .guess-form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .guess-form input {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
-        .history-container {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: var(--card);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .history-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .history-item {
-            padding: 8px 12px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-
-        .history-item.high {
-            background-color: rgba(255, 107, 107, 0.1);
-            color: var(--secondary);
-        }
-
-        .history-item.low {
-            background-color: rgba(76, 201, 240, 0.1);
-            color: var(--accent);
-        }
-
-        .history-item.correct {
-            background-color: rgba(76, 204, 163, 0.1);
-            color: var(--success);
-        }
-
-        .stats-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: var(--card);
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
-        .selected-mode {
-            border: 2px solid var(--primary);
-            transform: translateY(-5px);
-        }
-
-        #easy-indicator { background-color: var(--success); }
-        #medium-indicator { background-color: var(--warning); }
-        #hard-indicator { background-color: var(--secondary); }
-        #extreme-indicator { background-color: var(--primary); }
-
-        #game-screen { display: none; }
         
-        @media (max-width: 600px) {
-            .game-info {
-                flex-direction: column;
-            }
-            .buttons-container {
-                flex-direction: column;
-            }
-            .guess-form {
-                flex-direction: column;
-            }
+        body {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: fadein 1s ease-out;
+        }
+        @keyframes fadein {
+       from {
+       opacity: 0;
+       }
+       to {
+       opacity: 1;
+  }
+}
+        .logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            letter-spacing: 8px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.877);
+        }
+        
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.877);
+        }
+
+    
+        
+        .game-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 2rem;
+            padding: 2rem;
+            margin: 3rem 0;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+        
+        .game-card {
+       flex-shrink: 0;
+       width: 320px;
+       min-width: 320px;
+       background-color: rgba(255, 255, 255, 0.1);
+       border-radius: 15px;
+       overflow: hidden;
+       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+       transition: box-shadow 0.3s ease, transform 0.3s ease;
+       animation: fadeIn 1s ease-out;
+       will-change: transform;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.game-card:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05); 
+    border-radius: 15px; 
+}
+
+        
+        .game-cover {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        
+        .game-info {
+            padding: 1.5rem;
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .game-desc {
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .play-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.05);
+            color: rgb(126, 255, 132)
+        }
+        
+        footer {
+        text-align: center;
+        padding: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1px;
+        flex-direction: column;
+        overflow: hidden;
+        animation: fadein 1s ease-out;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+        footer img {
+            width: 100px;
+            height: 100px;
+            margin: 0;
+            vertical-align: middle;
+        }
+        
+        footer p {
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <!-- Start Screen -->
-    <div id="start-screen">
-        <h1>Guess the Number</h1>
-        <p class="subtitle">challenges</p>
-        
-        <button class="back-btn" onclick="window.location.href='../index.html'">×</button>
-        
-        <div class="mode-container">
-            <div class="mode-card" id="easy-card" onclick="selectMode('easy')">
-                <div class="mode-title">
-                    <span class="difficulty-indicator" id="easy-indicator"></span>
-                    Easy
-                </div>
-                <p>Range: 1-50</p>
-                <p>Guesses: 8</p>
-                <p>Time: 45s</p>
-            </div>
-            
-            <div class="mode-card" id="medium-card" onclick="selectMode('medium')">
-                <div class="mode-title">
-                    <span class="difficulty-indicator" id="medium-indicator"></span>
-                    Medium
-                </div>
-                <p>Range: 1-100</p>
-                <p>Guesses: 5</p>
-                <p>Time: 30s</p>
-            </div>
-            
-            <div class="mode-card" id="hard-card" onclick="selectMode('hard')">
-                <div class="mode-title">
-                    <span class="difficulty-indicator" id="hard-indicator"></span>
-                    Hard
-                </div>
-                <p>Range: 1-200</p>
-                <p>Guesses: 4</p>
-                <p>Time: 20s</p>
-            </div>
-            
-            <div class="mode-card" id="extreme-card" onclick="selectMode('extreme')">
-                <div class="mode-title">
-                    <span class="difficulty-indicator" id="extreme-indicator"></span>
-                    Extreme
-                </div>
-                <p>Range: 1-500</p>
-                <p>Guesses: 3</p>
-                <p>Time: 15s</p>
-            </div>
-        </div>
-        
-        <button id="start-btn" onclick="startGame()">Start Game</button>
-        
-        <div id="high-score-display" style="text-align: center; margin-top: 20px; font-weight: 600;">High Score: 0</div>
-    </div>
+    <header>
+        <div class="logo">WAVE</div>
+        <div class="tagline">Ride the wave of endless gaming adventures</div>
+    </header>
     
-    <!-- Game Screen -->
-    <div id="game-screen">
-        <h1>Guess the Number</h1>
-        
-        <div class="range-display" id="range-display">Guess between 1-100</div>
-        
-        <div class="progress-container">
-            <div id="time-bar"></div>
-        </div>
-        
-        <div class="game-info">
-            <div class="info-box" id="timer">Time: 30s</div>
-            <div class="info-box" id="guesses-left">Guesses: 5</div>
-            <div class="info-box" id="score-display">Score: 0</div>
-        </div>
-        
-        <div class="guess-form">
-            <input type="number" id="user-guess" min="1" max="100" placeholder="Enter your guess">
-            <button id="guess-btn" onclick="checkGuess()">Guess</button>
-        </div>
-        
-        <p id="message"></p>
-        
-        <div class="buttons-container">
-            <button class="hint-btn" onclick="getHint()">Hint (-50 pts)</button>
-            <button class="powerup-btn" onclick="usePowerup('extraTime')">+10s (-100 pts)</button>
-            <button class="powerup-btn" onclick="usePowerup('extraGuess')">+1 Guess (-100 pts)</button>
-            <button class="powerup-btn" onclick="usePowerup('narrowRange')">Narrow Range (-150 pts)</button>
-        </div>
-        
-        <div class="history-container">
-            <p class="history-title">Guess History</p>
-            <div id="guess-history"></div>
-        </div>
-        
-        <div class="stats-container">
-            <div>Streak: <span id="streak">0</span></div>
-            <div>Best: <span id="best-streak">0</span></div>
-            <div>Games: <span id="games-played">0</span></div>
-        </div>
-        
-        <button onclick="returnToMenu()" style="display: block; margin: 20px auto; background-color: #6c757d;">Back to Menu</button>
-    </div>
-    
-    <div class="modal" id="game-over-modal">
-        <div class="modal-content">
-            <h2 id="result-title" style="margin-bottom: 20px; color: var(--primary);">Game Over</h2>
-            <p id="result-message" style="margin-bottom: 15px;"></p>
-            <p id="final-score" style="margin-bottom: 25px; font-weight: 600; color: var(--primary);"></p>
-            <div style="display: flex; gap: 10px; justify-content: center;">
-                <button onclick="restartGame()">Play Again</button>
-                <button onclick="returnToMenu()" style="background-color: #6c757d;">Main Menu</button>
+    <main>
+        <div class="game-grid">
+            <div class="game-card">
+                <img src="sdfbc.PNG" alt="Space Dodgers" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Space Dodgers</h2>
+                    <p class="game-desc">Fly through space dodging asteroids.</p>
+                    <a href="spacedodgers/index.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="Flappy Bird" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Flappy Bird</h2>
+                    <p class="game-desc">Fly through the pipes.</p>
+                    <a href="flappybird/index.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="gtm.jpg" alt="Guess the Number" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Guess the Number</h2>
+                    <p class="game-desc">Guess the number challenges!</p>
+                    <a href="guessthenum/index.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="colo.webp" alt="Draw a Circle" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Draw a Circle</h2>
+                    <p class="game-desc">Draw the most circular circle.</p>
+                    <a href="dpc/dpc.html" class="play-button">Play Now</a>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <script>
-        // Game variables
-        let randomNumber;
-        let minRange = 1;
-        let maxRange = 100;
-        let attempts;
-        let maxAttempts;
-        let timeLeft;
-        let maxTime;
-        let timer;
-        let score = 0;
-        let highScore = 0;
-        let streak = 0;
-        let bestStreak = 0;
-        let gamesPlayed = 0;
-        let difficulty = 'medium';
-        let guessHistory = [];
-        let gameActive = false;
-        let hintUsed = false;
-        let selectedMode = null;
+    <footer>
+        <div class="imgft">
+            <a href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSKkwzqNsVvNfJXDXkpLSZLtwjVXTXbmdnlbKKLQpqrQbZrSdhNjtLZgmKxRLMXLPMxbfbzr" target="_blank">
+                <img src="icon.webp" alt="WAVE icon" style="margin: 0;">
 
-        // Simple feedback messages
-        const feedbackMessages = [
-            "Not quite!",
-            "Try again!",
-            "Keep trying!",
-            "Getting closer...",
-            "Almost there!",
-            "Not yet!",
-            "Still searching...",
-            "Not that one!"
-        ];
+            </a>
+        </div>        
+        <div class="credits">
+            <p>&copy; 2025 WAVE Gaming. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <style>
+    .credits p {
+        font-size: 17px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
 
-        // Select game mode
-        function selectMode(mode) {
-            selectedMode = mode;
-            
-            // Remove selected class from all cards
-            document.querySelectorAll('.mode-card').forEach(card => {
-                card.classList.remove('selected-mode');
-            });
-            
-            // Add selected class to chosen card
-            document.getElementById(`${mode}-card`).classList.add('selected-mode');
-            
-            // Update difficulty
-            difficulty = mode;
-        }
+    .imgft img {
+        display: block;
+        width: 50px;
+        height: auto;
 
-        // Start the game
-        function startGame() {
-            if (!selectedMode) {
-                alert("Please select a difficulty mode first!");
-                return;
-            }
-            
-            // Hide start screen, show game screen
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('game-screen').style.display = 'block';
-            
-            // Initialize game with selected difficulty
-            initGame();
-            startTimer();
-        }
+    }
+    
+    .imgft {
+        transition: transform 0.4s ease-in-out, 
+                filter 0.4s ease-in-out, 
+                box-shadow 0.4s ease-in-out;
+}
 
-        // Return to main menu
-        function returnToMenu() {
-            // Clear any running timer
-            clearInterval(timer);
-            
-            // Hide game screen, show start screen
-            document.getElementById('game-screen').style.display = 'none';
-            document.getElementById('start-screen').style.display = 'block';
-            
-            // Hide modal if open
-            document.getElementById('game-over-modal').style.display = 'none';
-            
-            // Update high score display on start screen
-            document.getElementById('high-score-display').innerText = `High Score: ${highScore}`;
-        }
-
-        // Initialize the game
-        function initGame() {
-            // Set difficulty parameters
-            switch(difficulty) {
-                case 'easy':
-                    maxAttempts = 8;
-                    maxTime = 45;
-                    minRange = 1;
-                    maxRange = 50;
-                    break;
-                case 'medium':
-                    maxAttempts = 5;
-                    maxTime = 30;
-                    minRange = 1;
-                    maxRange = 100;
-                    break;
-                case 'hard':
-                    maxAttempts = 4;
-                    maxTime = 20;
-                    minRange = 1;
-                    maxRange = 200;
-                    break;
-                case 'extreme':
-                    maxAttempts = 3;
-                    maxTime = 15;
-                    minRange = 1;
-                    maxRange = 500;
-                    break;
-            }
-            
-            randomNumber = Math.floor(Math.random() * (maxRange - minRange + 1)) + minRange;
-            attempts = maxAttempts;
-            timeLeft = maxTime;
-            guessHistory = [];
-            hintUsed = false;
-            gameActive = true;
-            
-            // Update UI
-            document.getElementById("user-guess").min = minRange;
-            document.getElementById("user-guess").max = maxRange;
-            document.getElementById("range-display").innerText = `Guess between ${minRange}-${maxRange}`;
-            document.getElementById("timer").innerText = `Time: ${timeLeft}s`;
-            document.getElementById("guesses-left").innerText = `Guesses: ${attempts}`;
-            document.getElementById("message").innerText = "";
-            document.getElementById("guess-history").innerHTML = "";
-            document.getElementById("time-bar").style.width = "100%";
-            
-            // Enable input and buttons
-            document.getElementById("user-guess").disabled = false;
-            document.getElementById("guess-btn").disabled = false;
-            
-            // Clear any existing timer
-            clearInterval(timer);
-        }
-
-        // Start the timer
-        function startTimer() {
-            // Reset the time bar
-            document.getElementById("time-bar").style.width = "100%";
-            
-            timer = setInterval(() => {
-                timeLeft--;
-                
-                // Update timer display
-                document.getElementById("timer").innerText = `Time: ${timeLeft}s`;
-                
-                // Update time bar
-                const percentage = (timeLeft / maxTime) * 100;
-                document.getElementById("time-bar").style.width = `${percentage}%`;
-                
-                // Change color based on time left
-                if (timeLeft <= maxTime * 0.25) {
-                    document.getElementById("time-bar").style.backgroundColor = "#FF6B6B";
-                } else if (timeLeft <= maxTime * 0.5) {
-                    document.getElementById("time-bar").style.backgroundColor = "#FFBE0B";
-                }
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    endGame(false, "Time's up!");
-                }
-            }, 1000);
-        }
-
-        // Check the user's guess
-        function checkGuess() {
-            if (!gameActive) return;
-
-            let userGuess = parseInt(document.getElementById("user-guess").value);
-            let message = document.getElementById("message");
-            let inputField = document.getElementById("user-guess");
-
-            // Validate input
-            if (isNaN(userGuess) || userGuess < minRange || userGuess > maxRange) {
-                message.innerText = `Please enter a valid number (${minRange}-${maxRange})`;
-                return;
-            }
-
-            // Decrease attempts
-            attempts--;
-            document.getElementById("guesses-left").innerText = `Guesses: ${attempts}`;
-            
-            // Add to guess history
-            addToHistory(userGuess);
-            
-            // Clear input field for next guess
-            inputField.value = "";
-            
-            // Check guess
-            if (userGuess < randomNumber) {
-                message.innerText = `${feedbackMessages[Math.floor(Math.random() * feedbackMessages.length)]} Too low.`;
-            } else if (userGuess > randomNumber) {
-                message.innerText = `${feedbackMessages[Math.floor(Math.random() * feedbackMessages.length)]} Too high.`;
-            } else {
-                // Correct guess!
-                
-                // Calculate score based on difficulty, time left, and attempts
-                const difficultyMultiplier = {
-                    'easy': 1,
-                    'medium': 2,
-                    'hard': 3,
-                    'extreme': 5
-                };
-                
-                const baseScore = 1000;
-                const timeBonus = timeLeft * 10;
-                const attemptBonus = attempts * 50;
-                const diffBonus = difficultyMultiplier[difficulty] * 100;
-                
-                const roundScore = baseScore + timeBonus + attemptBonus + diffBonus;
-                
-                // Apply streak bonus if applicable
-                let streakBonus = 0;
-                streak++;
-                
-                if (streak > 1) {
-                    streakBonus = streak * 50;
-                    message.innerText = `Correct! Streak bonus: +${streakBonus}`;
-                } else {
-                    message.innerText = "Correct! You got it!";
-                }
-                
-                // Update best streak
-                if (streak > bestStreak) {
-                    bestStreak = streak;
-                    document.getElementById("best-streak").innerText = bestStreak;
-                }
-                
-                // Update total score
-                score += roundScore + streakBonus;
-                
-                // Update high score if needed
-                if (score > highScore) {
-                    highScore = score;
-                    document.getElementById('high-score-display').innerText = `High Score: ${highScore}`;
-                }
-                
-                // End game with win
-                endGame(true, `You win! The number was ${randomNumber}!`);
-            }
-
-            // Check if out of guesses
-            if (attempts <= 0 && userGuess !== randomNumber) {
-                endGame(false, `No guesses left! The number was ${randomNumber}.`);
-            }
-        }
-
-        // Add guess to history
-        function addToHistory(guess) {
-            const historyContainer = document.getElementById("guess-history");
-            const historyItem = document.createElement("div");
-            historyItem.classList.add("history-item");
-            
-            if (guess < randomNumber) {
-                historyItem.classList.add("low");
-                historyItem.innerText = `${guess} - Too low`;
-            } else if (guess > randomNumber) {
-                historyItem.classList.add("high");
-                historyItem.innerText = `${guess} - Too high`;
-            } else {
-                historyItem.classList.add("correct");
-                historyItem.innerText = `${guess} - Correct!`;
-            }
-            
-            historyContainer.appendChild(historyItem);
-            
-            // Add to history array
-            guessHistory.push(guess);
-        }
-
-        // Get a hint
-        function getHint() {
-            if (!gameActive || hintUsed) return;
-            
-            // Check if player has enough points
-            if (score < 50) {
-                document.getElementById("message").innerText = "Not enough points for hint!";
-                return;
-            }
-            
-            score -= 50;
-            document.getElementById("score-display").innerText = `Score: ${score}`;
-            
-            // Generate hint
-            let hint;
-            const randomHintType = Math.floor(Math.random() * 3);
-            
-            switch(randomHintType) {
-                case 0:
-                    // Even/Odd hint
-                    hint = randomNumber % 2 === 0 ? 
-                        "The number is even" : 
-                        "The number is odd";
-                    break;
-                case 1:
-                    // Digit sum hint
-                    const digitSum = String(randomNumber).split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-                    hint = `The sum of digits is ${digitSum}`;
-                    break;
-                case 2:
-                    // Range narrowing
-                    const rangeSize = maxRange - minRange;
-                    const narrowedMin = Math.max(minRange, randomNumber - Math.floor(rangeSize * 0.2));
-                    const narrowedMax = Math.min(maxRange, randomNumber + Math.floor(rangeSize * 0.2));
-                    hint = `The number is between ${narrowedMin} and ${narrowedMax}`;
-                    break;
-            }
-            
-            document.getElementById("message").innerText = `Hint: ${hint}`;
-            hintUsed = true;
-        }
-
-        // Use powerup
-        function usePowerup(type) {
-            if (!gameActive) return;
-            
-            let cost = 0;
-            let message = "";
-            
-            switch(type) {
-                case 'extraTime':
-                    cost = 100;
-                    if (score >= cost) {
-                        timeLeft += 10;
-                        message = "+10 seconds added!";
-                    }
-                    break;
-                case 'extraGuess':
-                    cost = 100;
-                    if (score >= cost) {
-                        attempts += 1;
-                        message = "+1 guess added!";
-                        document.getElementById("guesses-left").innerText = `Guesses: ${attempts}`;
-                    }
-                    break;
-                case 'narrowRange':
-                    cost = 150;
-                    if (score >= cost) {
-                        // Narrow the range by 40%
-                        const rangeSize = maxRange - minRange;
-                        minRange = Math.max(minRange, randomNumber - Math.floor(rangeSize * 0.3));
-                        maxRange = Math.min(maxRange, randomNumber + Math.floor(rangeSize * 0.3));
-                        
-                        document.getElementById("range-display").innerText = `Guess between ${minRange}-${maxRange}`;
-                        document.getElementById("user-guess").min = minRange;
-                        document.getElementById("user-guess").max = maxRange;
-                        
-                        message = `Range narrowed to ${minRange}-${maxRange}!`;
-                    }
-                    break;
-            }
-            
-            if (score >= cost) {
-                score -= cost;
-                document.getElementById("score-display").innerText = `Score: ${score}`;
-                document.getElementById("message").innerText = message;
-            } else {
-                document.getElementById("message").innerText = "Not enough points!";
-            }
-        }
-
-        // End the game
-        function endGame(isWin, message) {
-            clearInterval(timer);
-            gameActive = false;
-            
-            // Update games played
-            gamesPlayed++;
-            document.getElementById("games-played").innerText = gamesPlayed;
-            
-            // Reset streak if lost
-            if (!isWin) {
-                streak = 0;
-            }
-            
-            document.getElementById("streak").innerText = streak;
-            
-            // Update score display
-            document.getElementById("score-display").innerText = `Score: ${score}`;
-            
-            // Show modal with results
-            const modal = document.getElementById("game-over-modal");
-            const resultTitle = document.getElementById("result-title");
-            const resultMessage = document.getElementById("result-message");
-            const finalScore = document.getElementById("final-score");
-            
-            resultTitle.innerText = isWin ? "Victory!" : "Game Over";
-            resultMessage.innerText = message;
-            finalScore.innerText = `Score: ${score}`;
-            
-            modal.style.display = "flex";
-            
-            // Disable game controls
-            document.getElementById("user-guess").disabled = true;
-            document.getElementById("guess-btn").disabled = true;
-        }
-
-        // Restart the game
-        function restartGame() {
-            document.getElementById("game-over-modal").style.display = "none";
-            initGame();
-            startTimer();
-        }
-
-        // Initialize the game on load
-        window.onload = function() {
-            // Load high score from local storage if available
-            const savedHighScore = localStorage.getItem("guessTheNumberHighScore");
-            if (savedHighScore) {
-                highScore = parseInt(savedHighScore);
-                document.getElementById("high-score-display").innerText = `High Score: ${highScore}`;
-            }
-            
-            // Load best streak from local storage if available
-            const savedBestStreak = localStorage.getItem("guessTheNumberBestStreak");
-            if (savedBestStreak) {
-                bestStreak = parseInt(savedBestStreak);
-                document.getElementById("best-streak").innerText = bestStreak;
-            }
-            
-            // Load games played from local storage if available
-            const savedGamesPlayed = localStorage.getItem("guessTheNumberGamesPlayed");
-            if (savedGamesPlayed) {
-                gamesPlayed = parseInt(savedGamesPlayed);
-                document.getElementById("games-played").innerText = gamesPlayed;
-            }
-            
-            // Add event listener for Enter key
-            document.getElementById("user-guess").addEventListener("keyup", function(event) {
-                if (event.key === "Enter") {
-                    checkGuess();
-                }
-            });
-        };
-        
-        // Save stats to local storage when window is closed
-        window.onbeforeunload = function() {
-            localStorage.setItem("guessTheNumberHighScore", highScore);
-            localStorage.setItem("guessTheNumberBestStreak", bestStreak);
-            localStorage.setItem("guessTheNumberGamesPlayed", gamesPlayed);
-        };
-    </script>
+    
+    .imgft:hover {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 10px rgb(152, 71, 243));
+    }
+    </style>
+    
 </body>
 </html>
