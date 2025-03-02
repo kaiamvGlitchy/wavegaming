@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="favicon.PNG">
+    <!--adsense-->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5484266396833706"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAVE - Gaming Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: fadein 1s ease-out;
+        }
+        @keyframes fadein {
+       from {
+       opacity: 0;
+       }
+       to {
+       opacity: 1;
+  }
+}
+        .logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            letter-spacing: 8px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.877);
+        }
+        
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.877);
+        }
+
+    
+        
+        .game-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 2rem;
+            padding: 2rem;
+            margin: 3rem 0;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+        
+        .game-card {
+       flex-shrink: 0;
+       width: 320px;
+       min-width: 320px;
+       background-color: rgba(255, 255, 255, 0.1);
+       border-radius: 15px;
+       overflow: hidden;
+       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+       transition: box-shadow 0.3s ease, transform 0.3s ease;
+       animation: fadeIn 1s ease-out;
+       will-change: transform;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.game-card:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05); 
+    border-radius: 15px; 
+}
+
+        
+        .game-cover {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        
+        .game-info {
+            padding: 1.5rem;
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .game-desc {
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .play-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.05);
+            color: rgb(126, 255, 132)
+        }
+        
+        footer {
+        text-align: center;
+        padding: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1px;
+        flex-direction: column;
+        overflow: hidden;
+        animation: fadein 1s ease-out;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+        footer img {
+            width: 100px;
+            height: 100px;
+            margin: 0;
+            vertical-align: middle;
+        }
+        
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">WAVE</div>
+        <div class="tagline">Ride the wave of endless gaming adventures</div>
+    </header>
+    
+    <main>
+        <div class="game-grid">
+            <div class="game-card">
+                <img src="sdfbc.PNG" alt="Space Dodgers" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Space Dodgers</h2>
+                    <p class="game-desc">Fly through space dodging asteroids.</p>
+                    <a href="spacedodgers/index.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="Flappy Bird" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Flappy Bird</h2>
+                    <p class="game-desc">Fly through the pipes.</p>
+                    <a href="flappybird/index.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="gtm.jpg" alt="Guess the Number" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Guess the Number</h2>
+                    <p class="game-desc">Guess the number challenges!</p>
+                    <a href="guessthenum/index.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="colo.webp" alt="Draw a Circle" class="game-cover">
+                <div class="game-info">
+                    <h2 class="game-title">Draw a Circle</h2>
+                    <p class="game-desc">Draw the most circular circle.</p>
+                    <a href="dpc/dpc.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="imgft">
+            <a href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSKkwzqNsVvNfJXDXkpLSZLtwjVXTXbmdnlbKKLQpqrQbZrSdhNjtLZgmKxRLMXLPMxbfbzr" target="_blank">
+                <img src="icon.webp" alt="WAVE icon" style="margin: 0;">
+
+            </a>
+        </div>        
+        <div class="credits">
+            <p>&copy; 2025 WAVE Gaming. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <style>
+    .credits p {
+        font-size: 17px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+
+    .imgft img {
+        display: block;
+        width: 50px;
+        height: auto;
+
+    }
+    
+    .imgft {
+        transition: transform 0.4s ease-in-out, 
+                filter 0.4s ease-in-out, 
+                box-shadow 0.4s ease-in-out;
+}
+
+    
+    .imgft:hover {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 10px rgb(152, 71, 243));
+    }
+    </style>
+    
+</body>
+</html>
