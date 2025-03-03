@@ -24,21 +24,24 @@
         }
         
         header {
-            background-color: rgba(0, 0, 0, 0.5);
-            text-align: center;
-            padding: 2rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            animation: fadein 1s ease-out;
-        }
-        @keyframes fadein {
-       from {
-       opacity: 0;
-       }
-       to {
-       opacity: 1;
-  }
+         background-color: rgba(0, 0, 0, 0.5);
+         text-align: center;
+         padding: 2rem 0;
+         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+         overflow: hidden;
+         animation: hfadein 1s ease-out;
 }
+
+@keyframes hfadein {
+    from {
+        transform: translateY(-50px); 
+    }
+    to {
+        transform: translateY(0px); 
+    }
+}
+
+
         .logo {
             font-size: 3.5rem;
             font-weight: bold;
@@ -78,14 +81,18 @@
        overflow: hidden;
        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
        transition: box-shadow 0.3s ease, transform 0.3s ease-in-out;
-       animation: fadeIn 1s ease-out;
        will-change: transform;
+       animation: gcfadein 1s ease-out;
+}
+@keyframes gcfadein {
+    from {
+        transform: translateX(50px); 
+    }
+    to {
+        transform: translateX(0); 
+    }
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
 
 .game-card:hover {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
@@ -132,25 +139,25 @@
         }
         
         footer {
-        text-align: center;
-        padding: 1.5rem;
-        background-color: rgba(0, 0, 0, 0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1px;
-        flex-direction: column;
-        overflow: hidden;
-        animation: fadein 1s ease-out;
+    text-align: center;
+    padding: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    flex-direction: column;
+    overflow: hidden;
+    animation: ftfadein 1s ease-out;
 }
 
-@keyframes fadein {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+@keyframes ftfadein {
+    from {
+        transform: translateY(50px); 
+    }
+    to {
+        transform: translateY(0); 
+    }
 }
 
         footer img {
@@ -165,48 +172,55 @@
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="logo">WAVE</div>
-        <div class="tagline">Ride the wave of endless gaming adventures</div>
-    </header>
-    
-    <main>
-        <div class="game-grid">
-            <div class="game-card">
-                <img src="sdfbc.PNG" alt="Space Dodgers" class="game-cover">
-                <div class="game-info">
-                    <h2 class="game-title">Space Dodgers</h2>
-                    <p class="game-desc">Fly through space dodging asteroids.</p>
-                    <a href="spacedodgers/index.html" class="play-button">Play Now</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="Flappy Bird" class="game-cover">
-                <div class="game-info">
-                    <h2 class="game-title">Flappy Bird</h2>
-                    <p class="game-desc">Fly through the pipes.</p>
-                    <a href="flappybird/index.html" class="play-button">Play Now</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="gtm.jpg" alt="Guess the Number" class="game-cover">
-                <div class="game-info">
-                    <h2 class="game-title">Guess the Number</h2>
-                    <p class="game-desc">Guess the number challenges!</p>
-                    <a href="guessthenum/index.html" class="play-button">Play Now</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="colo.webp" alt="Draw a Circle" class="game-cover">
-                <div class="game-info">
-                    <h2 class="game-title">Draw a Circle</h2>
-                    <p class="game-desc">Draw the most circular circle.</p>
-                    <a href="dpc/dpc.html" class="play-button">Play Now</a>
-                </div>
+<header>
+    <div class="logo">WAVE</div>
+    <div class="tagline">Ride the wave of endless gaming adventures</div>
+</header>
+
+<main>
+    <div class="game-grid">
+        <div class="game-card">
+            <img src="sdfbc.PNG" alt="Space Dodgers" class="game-cover">
+            <div class="game-info">
+                <h2 class="game-title">Space Dodgers</h2>
+                <p class="game-desc">Fly through space dodging asteroids.</p>
+                <a href="spacedodgers/index.html" class="play-button">Play Now</a>
             </div>
         </div>
-    </main>
+        <div class="game-card">
+            <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="Flappy Bird" class="game-cover">
+            <div class="game-info">
+                <h2 class="game-title">Flappy Bird</h2>
+                <p class="game-desc">Fly through the pipes.</p>
+                <a href="flappybird/index.html" class="play-button">Play Now</a>
+            </div>
+        </div>
+        <div class="game-card">
+            <img src="gtm.jpg" alt="Guess the Number" class="game-cover">
+            <div class="game-info">
+                <h2 class="game-title">Guess the Number</h2>
+                <p class="game-desc">Guess the number challenges!</p>
+                <a href="guessthenum/index.html" class="play-button">Play Now</a>
+            </div>
+        </div>
+        <div class="game-card">
+            <img src="dpc.jpg" alt="Draw a Circle" class="game-cover">
+            <div class="game-info">
+                <h2 class="game-title">Draw a Circle</h2>
+                <p class="game-desc">Draw the most circular circle.</p>
+                <a href="dpc/dpc.html" class="play-button">Play Now</a>
+            </div>
+        </div>
+        <div class="game-card">
+            <img src="cps.png" alt="cps" class="game-cover">
+            <div class="game-info">
+                <h2 class="game-title">Clicks per second test!</h2>
+                <p class="game-desc">Click as fast as you can, test your limits!</p>
+                <a href="cps test/index.html" class="play-button">Play Now</a>
+            </div>
+        </div>
+    </div> 
+</main>
 
     <footer>
         <div class="imgft">
@@ -225,6 +239,7 @@
         font-size: 17px;
         margin-top: 4px;
         margin-bottom: 4px;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.877);
     }
 
     .imgft img {
