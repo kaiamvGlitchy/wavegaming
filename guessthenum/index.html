@@ -594,9 +594,6 @@ const feedbackMessages = [
     "Not that one!"
 ];
 
-<!-- Cross Button to Close or Redirect -->
-<button class="close-btn" onclick="window.location.href='../index.html'">×</button>
-
 // Load saved data on initial page load
 document.addEventListener('DOMContentLoaded', function() {
     // Load high score from local storage
@@ -622,6 +619,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update progress bar
     checkUltraUnlock();
+    
+    // Set default mode and highlight
+    selectMode('medium');
 });
 
 // Attempt to select Ultra Extreme mode
@@ -642,6 +642,7 @@ function selectMode(mode) {
     }
     
     selectedMode = mode;
+    difficulty = mode;
     
     // Remove selected class from all cards
     document.querySelectorAll('.mode-card').forEach(card => {
@@ -651,8 +652,8 @@ function selectMode(mode) {
     // Add selected class to chosen card
     document.getElementById(`${mode}-card`).classList.add('selected-mode');
     
-    // Update difficulty
-    difficulty = mode;
+    // Enable start button if a mode is selected
+    document.getElementById('start-btn').disabled = false;
 }
 
 // Check if Ultra Extreme mode should be unlocked
@@ -1105,3 +1106,4 @@ function restartGame() {
     startTimer();
 }
 </script>
+</html>
