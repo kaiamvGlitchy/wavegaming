@@ -264,28 +264,6 @@
             100% { box-shadow: 0 0 15px #f06, 0 0 20px #ff0; }
         }
 
-        .back-btn {
-            position: fixed;
-            top: 10px;
-            right: 60px;
-            padding: 10px 15px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #f06;
-            font-size: 14px;
-            border: 2px solid #f06;
-            cursor: pointer;
-            z-index: 200;
-            transition: all 0.3s;
-            font-family: 'Press Start 2P', cursive;
-        }
-
-        .back-btn:hover {
-            color: #ff0;
-            border-color: #ff0;
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #f06;
-        }
-
         /* Game Over Screen */
         .game-over {
             position: fixed;
@@ -382,8 +360,6 @@
             <div class="timer">TIME: <span class="timer-val">0</span>s</div>
             <div class="score">SCORE: <span class="score-val">0</span></div>
         </div>
-        <button class="back-btn">BACK</button>
-        <button class="close-btn">×</button>
 
         <div class="game-over">
             <h1>GAME OVER</h1>
@@ -426,7 +402,6 @@
         const gameOverScreen = document.querySelector('.game-over');
         const restartBtn = document.querySelector('.restart-btn');
         const closeBtn = document.querySelector('.close-btn');
-        const backBtn = document.querySelector('.back-btn');
         const gameContainer = document.querySelector('.game-container');
 
         // Physics settings - FIXED VALUES
@@ -437,7 +412,7 @@
         let timeElapsed = 0;
         let score = 0;
         let asteroidSpeed = 1.5;           // Base speed
-        let asteroidSpawnRate = 0.008;     // Base spawn rate
+        let asteroidSpawnRate = 8;     // Base spawn rate
         let difficulty = 1;
         let gameLoop;
         let timeInterval;
@@ -498,21 +473,6 @@
             startGame();
         });
 
-        // Close button
-        closeBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent the click from triggering the game container click
-            if (confirm('Are you sure you want to exit the game?')) {
-                window.close();
-                // If window.close() doesn't work (usually in most browsers due to security)
-                document.body.innerHTML = '<div style="padding: 20px; text-align: center;">Game closed. Refresh to play again.</div>';
-            }
-        });
-
-        // Back button
-        backBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent the click from triggering the game container click
-            window.location.href = '../index.html';
-        });
 
         function jump() {
             // Fixed jump velocity
@@ -650,12 +610,12 @@
             asteroid.classList.add('asteroid');
             
             // Random size - smaller average size
-            const size = Math.floor(Math.random() * 25) + 35;  // 35-60px range
+            const size = Math.floor(Math.random() * 15) + 50;  // 35-60px range
             asteroid.style.width = `${size}px`;
             asteroid.style.height = `${size}px`;
             
             // Position at random height with more space for maneuvering
-            const posY = Math.floor(Math.random() * 65) + 10;  // 10-75vh range
+            const posY = Math.floor(Math.random() * 75) + 1;  // 10-75vh range
             asteroid.style.top = `${posY}vh`;
             asteroid.style.left = '105vw';  // Start slightly off-screen
             
@@ -665,7 +625,7 @@
             
             // Store the asteroid's speed as a data attribute
             // Add slight variation to asteroid speeds
-            const speedVariation = (Math.random() * 0.4) - 0.2;  // -0.2 to +0.2
+            const speedVariation = (Math.random() * 0.4) - 0.4;  // -0.2 to +0.2
             asteroid.dataset.speed = asteroidSpeed + speedVariation;
             
             // Add to game

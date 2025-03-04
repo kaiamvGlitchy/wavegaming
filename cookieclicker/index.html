@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker</title>
+    <style>
+        :root {
+            --primary: #8B4513;
+            --secondary: #D2691E;
+            --accent: #F4A460;
+            --background: #FFF8DC;
+            --text: #4A2511;
+        }
+        
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 0;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .game {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+        
+        .cookie-section {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .counter {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rate {
+            font-size: 18px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .cookie-wrapper {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        
+        .cookie-wrapper:active {
+            transform: scale(0.95);
+        }
+        
+        .cookie {
+            width: 100%;
+            height: 100%;
+            background-color: #CD853F;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 
+                0 8px 15px rgba(0, 0, 0, 0.3),
+                inset 0 -8px 15px rgba(0, 0, 0, 0.2),
+                inset 0 8px 15px rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease-out;
+        }
+        
+        .cookie:hover {
+            transform: scale(1.1);
+        }
+        
+        .cookie::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent 40%);
+        }
+        
+        .chocolate-chip {
+            position: absolute;
+            background-color: #3A1F00;
+            border-radius: 50%;
+            box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.2);
+        }
+        
+        .crumb {
+            position: absolute;
+            background-color: #CD853F;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fall 1s ease-out forwards;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+        
+        .upgrades-section {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background-color: rgba(255, 248, 220, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .upgrades-section h2 {
+            text-align: center;
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+        }
+        
+        .upgrade {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #FFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .upgrade:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .upgrade-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .upgrade-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent);
+            border-radius: 8px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .upgrade-info {
+            flex: 1;
+        }
+        
+        .upgrade-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .upgrade-desc {
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .upgrade-cost {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .upgrade-quantity {
+            margin-left: 10px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 15px;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+        
+        .animation-points {
+            position: absolute;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 4px black;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-up 1.5s ease-out forwards;
+        }
+        
+        @keyframes float-up {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+        
+        .save-section {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: var(--secondary);
+        }
+        
+        /* Custom scrollbar */
+        .upgrades-section::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .upgrades-section::-webkit-scrollbar-track {
+            background: #f1e7d0;
+            border-radius: 10px;
+        }
+        
+        .upgrades-section::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+        
+        .upgrades-section::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cookie-section, .upgrades-section {
+                max-width: 100%;
+            }
+            
+            .cookie-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🍪 Cookie Clicker 🍪</h1>
+    </header>
+    
+    <div class="container">
+        <div class="game">
+            <div class="cookie-section">
+                <div class="counter">0 cookies</div>
+                <div class="rate">0 cookies per second</div>
+                <div class="cookie-wrapper" id="cookieBtn">
+                    <div class="cookie" id="cookie"></div>
+                </div>
+            </div>
+            
+            <div class="upgrades-section" id="upgradesContainer">
+                <h2>Upgrades</h2>
+                <!-- Upgrades will be added here dynamically -->
+            </div>
+        </div>
+        
+        <div class="save-section">
+            <button id="saveBtn">Save Game</button>
+            <button id="resetBtn">Reset Game</button>
+        </div>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+    
+    <script>
+        // Game state
+        const gameState = {
+            cookies: 0,
+            cookiesPerSecond: 0,
+            cookiesPerClick: 1,
+            lastUpdate: Date.now(),
+            lastClickTime: Date.now(),
+            upgrades: [
+                {
+                    id: 'worker',
+                    name: 'Worker',
+                    description: '+1 cookie per second',
+                    baseCost: 0,  // Free
+                    cookiesPerSecond: 1,
+                    owned: 1,  // Start with one worker
+                    icon: '👷'
+                },
+                {
+                    id: 'juniorWorker',
+                    name: 'Junior Worker',
+                    description: '+2 cookies per second',
+                    baseCost: 250,
+                    cookiesPerSecond: 2,
+                    owned: 0,
+                    icon: '👷‍♂️'
+                },
+                {
+                    id: 'experiencedWorker',
+                    name: 'Experienced Worker',
+                    description: '+5 cookies per second',
+                    baseCost: 1000,
+                    cookiesPerSecond: 5,
+                    owned: 0,
+                    icon: '👨‍🔧'
+                },
+                {
+                    id: 'advancedWorker',
+                    name: 'Advanced Worker',
+                    description: '+10 cookies per second',
+                    baseCost: 5000,
+                    cookiesPerSecond: 10,
+                    owned: 0,
+                    icon: '👨‍🏭'
+                },
+                {
+                    id: 'chef',
+                    name: 'Chef',
+                    description: '+25 cookies per second',
+                    baseCost: 10000,
+                    cookiesPerSecond: 25,
+                    owned: 0,
+                    icon: '👨‍🍳'
+                },
+                {
+                    id: 'juniorChef',
+                    name: 'Junior Chef',
+                    description: '+50 cookies per second',
+                    baseCost: 50000,
+                    cookiesPerSecond: 50,
+                    owned: 0,
+                    icon: '👩‍🍳'
+                },
+                {
+                    id: 'experiencedChef',
+                    name: 'Experienced Chef',
+                    description: '+100 cookies per second',
+                    baseCost: 100000,
+                    cookiesPerSecond: 100,
+                    owned: 0,
+                    icon: '🧑‍🍳'
+                },
+                {
+                    id: 'advancedChef',
+                    name: 'Advanced Chef',
+                    description: '+250 cookies per second',
+                    baseCost: 250000,
+                    cookiesPerSecond: 250,
+                    owned: 0,
+                    icon: '👨‍🍳'
+                },
+                {
+                    id: 'grandma',
+                    name: 'Grandma',
+                    description: '+500 cookies per second',
+                    baseCost: 1000000,
+                    cookiesPerSecond: 500,
+                    owned: 0,
+                    icon: '👵'
+                },
+                {
+                    id: 'possessedGrandma',
+                    name: 'Possessed Grandma',
+                    description: '+1,000 cookies per second',
+                    baseCost: 5000000,
+                    cookiesPerSecond: 1000,
+                    owned: 0,
+                    icon: '👵🔮'
+                },
+                {
+                    id: 'poisonedGrandma',
+                    name: 'Poisoned Grandma',
+                    description: '+2,500 cookies per second',
+                    baseCost: 10000000,
+                    cookiesPerSecond: 2500,
+                    owned: 0,
+                    icon: '👵☣️'
+                },
+                {
+                    id: 'workerFactory',
+                    name: 'Worker Factory',
+                    description: '+5,000 cookies per second',
+                    baseCost: 25000000,
+                    cookiesPerSecond: 5000,
+                    owned: 0,
+                    icon: '🏭'
+                },
+                {
+                    id: 'chefFactory',
+                    name: 'Chef Factory',
+                    description: '+10,000 cookies per second',
+                    baseCost: 50000000,
+                    cookiesPerSecond: 10000,
+                    owned: 0,
+                    icon: '🏭👨‍🍳'
+                },
+                {
+                    id: 'grandmaFactory',
+                    name: 'Grandma Factory',
+                    description: '+50,000 cookies per second',
+                    baseCost: 150000000,
+                    cookiesPerSecond: 50000,
+                    owned: 0,
+                    icon: '🏭👵'
+                },
+                {
+                    id: 'automatedFactory',
+                    name: 'Automated Factory',
+                    description: '+100,000 cookies per second',
+                    baseCost: 500000000,
+                    cookiesPerSecond: 100000,
+                    owned: 0,
+                    icon: '🤖🏭'
+                },
+                {
+                    id: 'darkBaker',
+                    name: 'Dark Baker',
+                    description: '+250,000 cookies per second',
+                    baseCost: 1000000000,
+                    cookiesPerSecond: 250000,
+                    owned: 0,
+                    icon: '🖤👨‍🍳'
+                },
+                {
+                    id: 'shadowGrandma',
+                    name: 'Shadow Grandma',
+                    description: '+500,000 cookies per second',
+                    baseCost: 5000000000,
+                    cookiesPerSecond: 500000,
+                    owned: 0,
+                    icon: '🌑👵'
+                },
+                {
+                    id: 'elderOven',
+                    name: 'Elder Oven',
+                    description: '+1,000,000 cookies per second',
+                    baseCost: 10000000000,
+                    cookiesPerSecond: 1000000,
+                    owned: 0,
+                    icon: '🔥🏺'
+                },
+                {
+                    id: 'hauntedBakery',
+                    name: 'Haunted Bakery',
+                    description: '+2,500,000 cookies per second',
+                    baseCost: 50000000000,
+                    cookiesPerSecond: 2500000,
+                    owned: 0,
+                    icon: '👻🍪'
+                },
+                {
+                    id: 'cursedCookieMill',
+                    name: 'Cursed Cookie Mill',
+                    description: '+5,000,000 cookies per second',
+                    baseCost: 100000000000,
+                    cookiesPerSecond: 5000000,
+                    owned: 0,
+                    icon: '⚡🍪'
+                },
+                {
+                    id: 'interdimensionalBaker',
+                    name: 'Interdimensional Baker',
+                    description: '+10,000,000 cookies per second',
+                    baseCost: 250000000000,
+                    cookiesPerSecond: 10000000,
+                    owned: 0,
+                    icon: '🌌👨‍🍳'
+                },
+                {
+                    id: 'celestialFactory',
+                    name: 'Celestial Factory',
+                    description: '+100,000,000 cookies per second',
+                    baseCost: 1000000000000,
+                    cookiesPerSecond: 100000000,
+                    owned: 0,
+                    icon: '✨🏭'
+                },
+                {
+                    id: 'cookieSingularity',
+                    name: 'Cookie Singularity',
+                    description: '+500,000,000 cookies per second',
+                    baseCost: 5000000000000,
+                    cookiesPerSecond: 500000000,
+                    owned: 0,
+                    icon: '🌌🍪'
+                }
+            ]
+        };
+
+        // DOM elements
+        const cookieCounter = document.querySelector('.counter');
+        const rateDisplay = document.querySelector('.rate');
+        const cookieBtn = document.getElementById('cookieBtn');
+        const cookie = document.getElementById('cookie');
+        const upgradesContainer = document.getElementById('upgradesContainer');
+        const tooltip = document.getElementById('tooltip');
+        const saveBtn = document.getElementById('saveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // Initialize cookie with chocolate chips
+        function initializeCookie() {
+            // Clear existing chips
+            const existingChips = cookie.querySelectorAll('.chocolate-chip');
+            existingChips.forEach(chip => chip.remove());
+            
+            // Add chocolate chips
+            for (let i = 0; i < 15; i++) {
+                const chip = document.createElement('div');
+                chip.className = 'chocolate-chip';
+                
+                // Random size between 10px and 20px
+                const size = 10 + Math.random() * 10;
+                chip.style.width = size + 'px';
+                chip.style.height = size + 'px';
+                
+                // Random position within the cookie
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 80; // Distance from center (0-80% of radius)
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                chip.style.left = `calc(50% + ${x}px - ${size/2}px)`;
+                chip.style.top = `calc(50% + ${y}px - ${size/2}px)`;
+                
+                cookie.appendChild(chip);
+            }
+        }
+        
+        // Format large numbers with short forms
+        function formatNumber(num) {
+            if (num >= 1000000000000000) {
+                return (num / 1000000000000000).toFixed(2) + ' QD'; // Quadrillion
+            } else if (num >= 1000000000000) {
+                return (num / 1000000000000).toFixed(2) + ' T'; // Trillion
+            } else if (num >= 1000000000) {
+                return (num / 1000000000).toFixed(2) + ' B'; // Billion
+            } else if (num >= 1000000) {
+                return (num / 1000000).toFixed(2) + ' M'; // Million
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(2) + ' K'; // Thousand
+            } else {
+                return Math.floor(num);
+            }
+        }
+        
+        // Calculate cost for next upgrade
+        function calculateCost(upgrade) {
+            return Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.owned));
+        }
+        
+        // Update the cookie counter display
+        function updateCounter() {
+            cookieCounter.textContent = `${formatNumber(gameState.cookies)} cookies`;
+            rateDisplay.textContent = `${formatNumber(gameState.cookiesPerSecond)} cookies per second (auto: ${formatNumber(gameState.cookiesPerSecond * 0.1)})`;
+        }
+        
+        // Create cookie crumbs animation
+        function createCrumbs(x, y) {
+            const numCrumbs = 5 + Math.floor(Math.random() * 5);
+            
+            for (let i = 0; i < numCrumbs; i++) {
+                const crumb = document.createElement('div');
+                crumb.className = 'crumb';
+                
+                // Random size
+                const size = 3 + Math.random() * 7;
+                crumb.style.width = size + 'px';
+                crumb.style.height = size + 'px';
+                
+                // Position at click point
+                crumb.style.left = x + 'px';
+                crumb.style.top = y + 'px';
+                
+                // Random direction
+                const tx = (Math.random() - 0.5) * 100;
+                const ty = (Math.random() - 0.5) * 100;
+                const rot = (Math.random() - 0.5) * 360;
+                
+                crumb.style.setProperty('--tx', tx + 'px');
+                crumb.style.setProperty('--ty', ty + 'px');
+                crumb.style.setProperty('--rot', rot + 'deg');
+                
+                document.body.appendChild(crumb);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    crumb.remove();
+                }, 1000);
+            }
+        }
+        
+        // Show floating points animation
+        function showPoints(x, y) {
+            const points = document.createElement('div');
+            points.className = 'animation-points';
+            points.textContent = '+' + formatNumber(gameState.cookiesPerSecond);
+            
+            points.style.left = x + 'px';
+            points.style.top = y + 'px';
+            
+            document.body.appendChild(points);
+            
+            // Remove after animation
+            setTimeout(() => {
+                points.remove();
+            }, 1500);
+        }
+        
+        // Render all upgrades
+        function renderUpgrades() {
+            upgradesContainer.innerHTML = '<h2>Upgrades</h2>';
+            
+            gameState.upgrades.forEach(upgrade => {
+                // Skip the worker from being displayed entirely
+                if (upgrade.id === 'worker') {
+                    return;
+                }
+                
+                const cost = calculateCost(upgrade);
+                const canAfford = gameState.cookies >= cost;
+                
+                const upgradeElement = document.createElement('div');
+                upgradeElement.className = `upgrade ${canAfford ? '' : 'upgrade-disabled'}`;
+                upgradeElement.dataset.id = upgrade.id;
+                
+                upgradeElement.innerHTML = `
+                    <div class="upgrade-icon">${upgrade.icon}</div>
+                    <div class="upgrade-info">
+                        <div class="upgrade-name">${upgrade.name}</div>
+                        <div class="upgrade-desc">${upgrade.description}</div>
+                        <div class="upgrade-cost">${formatNumber(cost)} cookies</div>
+                    </div>
+                    <div class="upgrade-quantity">${upgrade.owned}</div>
+                `;
+                
+                upgradeElement.addEventListener('click', () => {
+                    if (canAfford) {
+                        purchaseUpgrade(upgrade);
+                    }
+                });
+                
+                // Add tooltip on hover
+                upgradeElement.addEventListener('mouseenter', (e) => {
+                    showTooltip(e, `${upgrade.name}\nCost: ${formatNumber(cost)} cookies\nOwned: ${upgrade.owned}\nProduces: ${formatNumber(upgrade.cookiesPerSecond)} cookies/sec`);
+                });
+                
+                upgradeElement.addEventListener('mouseleave', () => {
+                    hideTooltip();
+                });
+                
+                upgradesContainer.appendChild(upgradeElement);
+            });
+        }
+        
+        // Purchase an upgrade
+        function purchaseUpgrade(upgrade) {
+            const cost = calculateCost(upgrade);
+            
+            // Check if this is the Worker upgrade and player already has one
+            if (upgrade.id === 'worker' && upgrade.owned >= 1) {
+                showTooltip(event, `You can only have one Worker!`);
+                return; // Don't allow purchase
+            }
+            
+            if (gameState.cookies >= cost) {
+                gameState.cookies -= cost;
+                upgrade.owned += 1;
+                
+                // Update cookies per second
+                calculateCookiesPerSecond();
+                
+                updateCounter();
+                renderUpgrades();
+            }
+        }
+        
+        // Calculate total cookies per second
+        function calculateCookiesPerSecond() {
+            gameState.cookiesPerSecond = 0;
+            
+            gameState.upgrades.forEach(upgrade => {
+                gameState.cookiesPerSecond += upgrade.cookiesPerSecond * upgrade.owned;
+            });
+        }
+        
+        // Show tooltip
+        function showTooltip(event, text) {
+            tooltip.textContent = text;
+            tooltip.style.left = (event.pageX + 10) + 'px';
+            tooltip.style.top = (event.pageY + 10) + 'px';
+            tooltip.style.opacity = '1';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            tooltip.style.opacity = '0';
+        }
+        
+        // Update game state
+        function updateGame() {
+            const now = Date.now();
+            const delta = (now - gameState.lastUpdate) / 1000; // Convert to seconds
+            const lastClickDelta = (now - gameState.lastClickTime) / 1000; // Time since last click
+            
+            // If player hasn't clicked for more than 3 seconds, give 10% of CPS
+            if (lastClickDelta > 3) {
+                gameState.cookies += (gameState.cookiesPerSecond * 0.1) * delta;
+            }
+            
+            // Update display
+            updateCounter();
+            
+            // Update upgrade buttons (only if needed to avoid performance issues)
+            const shouldUpdateUpgrades = gameState.upgrades.some(upgrade => {
+                const cost = calculateCost(upgrade);
+                const canAffordNow = gameState.cookies >= cost;
+                const couldAffordBefore = gameState.cookies - ((gameState.cookiesPerSecond * 0.1) * delta) >= cost;
+                return canAffordNow !== couldAffordBefore;
+            });
+            
+            if (shouldUpdateUpgrades) {
+                renderUpgrades();
+            }
+            
+            gameState.lastUpdate = now;
+        }
+        
+        // Save game
+        function saveGame() {
+            localStorage.setItem('cookieClickerSave', JSON.stringify(gameState));
+            alert('Game saved!');
+        }
+        
+        // Load game
+        function loadGame() {
+            const savedGame = localStorage.getItem('cookieClickerSave');
+            
+            if (savedGame) {
+                const parsedSave = JSON.parse(savedGame);
+                
+                // Update game state with saved values
+                gameState.cookies = parsedSave.cookies;
+                gameState.cookiesPerSecond = parsedSave.cookiesPerSecond;
+                gameState.cookiesPerClick = parsedSave.cookiesPerClick;
+                
+                // Update upgrades
+                parsedSave.upgrades.forEach((savedUpgrade, index) => {
+                    if (index < gameState.upgrades.length) {
+                        gameState.upgrades[index].owned = savedUpgrade.owned;
+                    }
+                });
+                
+                calculateCookiesPerSecond();
+                updateCounter();
+                renderUpgrades();
+            }
+        }
+        
+        // Reset game
+        function resetGame() {
+            if (confirm('Are you sure you want to reset your game? All progress will be lost!')) {
+                // Reset cookies and rate
+                gameState.cookies = 0;
+                gameState.cookiesPerSecond = 0;
+                gameState.cookiesPerClick = 1;
+                
+                // Reset upgrades
+                gameState.upgrades.forEach((upgrade, index) => {
+                    upgrade.owned = index === 0 ? 1 : 0; // Only keep one worker
+                });
+                
+                calculateCookiesPerSecond();
+                updateCounter();
+                renderUpgrades();
+                initializeCookie();
+                
+                // Clear saved game
+                localStorage.removeItem('cookieClickerSave');
+            }
+        }
+        
+        // Initial setup
+        function init() {
+            // Initialize cookie design
+            initializeCookie();
+            
+            // Load saved game or start fresh
+            loadGame();
+            
+            // Set up click event for cookie
+            cookieBtn.addEventListener('click', (e) => {
+                // Get click position relative to cookie
+                const rect = cookie.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Add cookies based on cookiesPerSecond (the value from upgrades)
+                gameState.cookies += gameState.cookiesPerSecond;
+                
+                // Update last click time
+                gameState.lastClickTime = Date.now();
+                
+                // Update counter
+                updateCounter();
+                
+                // Create crumbs animation
+                createCrumbs(e.pageX, e.pageY);
+                
+                // Show points animation
+                showPoints(e.pageX, e.pageY);
+                
+                // Apply visual effect to cookie
+                cookie.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    cookie.style.transform = 'scale(1)';
+                }, 50);
+            });
+            
+            // Set up save and reset buttons
+            saveBtn.addEventListener('click', saveGame);
+            resetBtn.addEventListener('click', resetGame);
+            
+            // Initial render
+            calculateCookiesPerSecond();
+            updateCounter();
+            renderUpgrades();
+            
+            // Start game loop
+            setInterval(updateGame, 100); // Update 10 times per second
+        }
+        
+        // Start the game
+        init();
+    </script>
+</body>
+</html>
