@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+
+
+       <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -696,11 +698,6 @@
             upgradesContainer.innerHTML = '<h2>Upgrades</h2>';
             
             gameState.upgrades.forEach(upgrade => {
-                // Skip the worker from being displayed entirely
-                if (upgrade.id === 'worker') {
-                    return;
-                }
-                
                 const cost = calculateCost(upgrade);
                 const canAfford = gameState.cookies >= cost;
                 
@@ -740,12 +737,6 @@
         // Purchase an upgrade
         function purchaseUpgrade(upgrade) {
             const cost = calculateCost(upgrade);
-            
-            // Check if this is the Worker upgrade and player already has one
-            if (upgrade.id === 'worker' && upgrade.owned >= 1) {
-                showTooltip(event, `You can only have one Worker!`);
-                return; // Don't allow purchase
-            }
             
             if (gameState.cookies >= cost) {
                 gameState.cookies -= cost;
