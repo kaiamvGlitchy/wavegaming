@@ -117,7 +117,7 @@
             white-space: pre;
             line-height: 1.5;
         }
-
+        
         .restart-text {
             color: #FF0000;
             text-shadow: 3px 3px 0 #000;
@@ -139,6 +139,19 @@
             color: #FFFF00;
         }
 
+        .device-warning {
+            position: fixed;
+            z-index: 10;
+            width: 80vw;
+            font-size: 2vh;
+            font-weight: normal;
+            color: #ff0000;
+            bottom: 10vh;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            text-shadow: 2px 2px 0 #000;
+        }
 
         /* Scanline effect for CRT feel */
         body::after {
@@ -177,6 +190,9 @@
     <img class="bird" src="bird.png" alt="bird-img">
     <div class="message">
         PRESS TO START
+    </div>
+    <div class="device-warning">
+        THIS GAME MIGHT NOT WORK PROPERLY ON SOME DEVICES
     </div>
     <div class="score">
         <span class="score_title"></span>

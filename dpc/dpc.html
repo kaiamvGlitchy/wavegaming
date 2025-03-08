@@ -1,482 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <!--adsense-->
-     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5484266396833706"
-     crossorigin="anonymous"></script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Perfect Circle Game</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfect Circle Game with Target Ring</title>
   <style>
-    /* Base styles */
     body {
       margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      background-color: black;
-      color: white;
-      touch-action: none;
-      overflow-x: hidden;
-    }
-
-    /* Layout */
-    .container {
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
       min-height: 100vh;
-      padding: 1.25rem;
     }
-
-    /* Typography */
+    
     h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+      color: #ffffff;
+      margin-bottom: 20px;
       text-align: center;
+      text-shadow: 0 0 17px #fff;
     }
-
-    @media (min-width: 768px) {
-      h1 {
-        font-size: 1.875rem;
-      }
+    
+    .score-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
     }
-
+    
     .score {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 17px #fff;
     }
-
-    @media (min-width: 768px) {
-      .score {
-        font-size: 1.875rem;
-      }
+    
+    .score-label {
+      font-size: 1rem;
+      color: #aaa;
     }
-
-    .feedback {
-      font-size: 1.125rem;
-      margin-top: 0.25rem;
-      margin-bottom: 0.25rem;
+    
+    #feedback {
+      margin-bottom: 20px;
       text-align: center;
-      min-height: 1.5rem;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      max-width: 500px;
     }
-
-    .instructions {
-      max-width: 90vw;
-      text-align: center;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
-      background-color: #1f2937;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      line-height: 1.625;
-    }
-
-    /* Game container */
-    .game-container {
+    
+    .game-area {
       position: relative;
-      width: min(90vw, 500px);
-      height: min(90vw, 500px);
-      border-radius: 0.5rem;
+      width: 500px;
+      height: 500px;
+      background-color: #222;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #444;
       overflow: hidden;
-      background-color: #111827;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
     }
-
-    .center-dot {
-      position: absolute;
-      width: 0.5rem;
-      height: 0.5rem;
-      background-color: white;
-      border-radius: 9999px;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%;
-      box-shadow: 0 0 5px #fff;
-    }
-
-    canvas {
+    
+    #gameCanvas {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       cursor: crosshair;
-      touch-action: none;
     }
-
-    /* Buttons */
-    .button-container {
+    
+    .center-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #60a5fa;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      box-shadow: 0 0 10px rgba(96, 165, 250, 0.7);
+    }
+    
+    .target-ring {
+      position: absolute;
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      pointer-events: none;
+    }
+    
+    .buttons {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
+      gap: 15px;
+      margin-bottom: 20px;
     }
-
-    .button {
-      border: none;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 9999px;
-      transition-property: all;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 150ms;
-      min-width: 120px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    
+    button {
+      padding: 12px 24px;
+      background-color: #3b82f6;
       color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.2s, transform 0.1s;
     }
-
-    .button:hover {
+    
+    button:hover {
+      background-color: #2563eb;
       transform: translateY(-2px);
     }
-
-    .button:active {
+    
+    button:active {
       transform: translateY(1px);
     }
-
-    .clear-button {
-      background-color: #7f1d1d;
+    
+    #clearButton {
+      background-color: #ef4444;
     }
-
-    .clear-button:hover {
-      background-color: #991b1b;
+    
+    #clearButton:hover {
+      background-color: #dc2626;
     }
-
-    .new-game-button {
-      background-color: #064e3b;
+    
+    .instructions {
+      max-width: 500px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      text-align: center;
+      line-height: 1.5;
     }
-
-    .new-game-button:hover {
-      background-color: #065f46;
+    
+    .instructions strong {
+      color: #60a5fa;
     }
-
+    
+    @media (max-width: 550px) {
+      .game-area {
+        width: 95vw;
+        height: 95vw;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Perfect Circle Game</h1>
-    
-    <div class="score" id="scoreDisplay">Circularity: ---</div>
-    
-    <div class="feedback" id="feedback">Draw a circle to see your score!</div>
-    
-    <div class="instructions">
-      Draw a circle around the dot. Try to stay about 40px away from the center.
-    </div>
-    
-    <div class="game-container" id="gameContainer">
-      <div class="center-dot"></div>
-      <canvas id="canvas"></canvas>
-    </div>
-    
-    <div class="button-container">
-      <button class="button clear-button" id="clearButton">Clear</button>
-      <button class="button new-game-button" id="newGameButton">New Game</button>
-          <path d="m12 19-7-7 7-7"></path>
-          <path d="M19 12H5"></path>
-        </svg>
-      </button>
-    </div>
+  <h1>Perfect Circle Game</h1>
+  
+  <div class="instructions">
+    <p>Draw a perfect circle by following the <strong>dashed target ring</strong>. Stay inside the boundaries for the highest score!</p>
+  </div>
+  
+  <div class="score-container">
+    <div class="score" id="scoreDisplay">0%</div>
+    <div class="score-label">ACCURACY</div>
+  </div>
+  
+  <div id="feedback">Draw a circle following the target ring</div>
+  
+  <div class="game-area">
+    <div class="center-dot"></div>
+    <div class="target-ring" id="targetRing"></div>
+    <canvas id="gameCanvas"></canvas>
+  </div>
+  
+  <div class="buttons">
+    <button id="clearButton">Clear</button>
+    <button id="newGameButton">New Game</button>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // DOM elements
-      const canvas = document.getElementById('canvas');
-      const gameContainer = document.getElementById('gameContainer');
+    // Wait for the page to fully load
+    window.onload = function() {
+      // Game elements
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
       const scoreDisplay = document.getElementById('scoreDisplay');
       const feedback = document.getElementById('feedback');
       const clearButton = document.getElementById('clearButton');
       const newGameButton = document.getElementById('newGameButton');
+      const targetRing = document.getElementById('targetRing');
       
-      // Canvas context
-      const ctx = canvas.getContext('2d');
+      // Set canvas size to match its parent
+      function setCanvasSize() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        
+        // Update target ring size - make it 60% of the canvas size
+        const targetSize = Math.min(canvas.width, canvas.height) * 0.6;
+        targetRing.style.width = `${targetSize}px`;
+        targetRing.style.height = `${targetSize}px`;
+      }
+      setCanvasSize();
       
-      // Game state
+      // Game variables
       let isDrawing = false;
       let points = [];
-      let centerX, centerY;
+      let centerX = canvas.width / 2;
+      let centerY = canvas.height / 2;
+      let targetRadius = parseInt(targetRing.style.width) / 2;
       
-      // Game settings - easier settings
-      const targetDistance = 40; // Target distance from center
-      const distanceTolerance = 20; // Increased tolerance for easier gameplay
-      
-      // Resize canvas to match container
-      function resizeCanvas() {
-        const width = gameContainer.clientWidth;
-        const height = gameContainer.clientHeight;
-        
-        canvas.width = width;
-        canvas.height = height;
-        
-        // Update center coordinates when resizing
-        centerX = width / 2;
-        centerY = height / 2;
-        
-        // Redraw if needed
-        if (points.length > 0) {
-          redrawPoints();
-        }
-      }
-      
-      // Initialize game
-      function initGame() {
-        // Set canvas size
-        resizeCanvas();
-        
-        // Clear canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Reset score
-        scoreDisplay.textContent = 'Circularity: ---';
-        feedback.textContent = 'Draw a circle to see your score!';
-        
-        // Center the dot
-        centerX = canvas.width / 2;
-        centerY = canvas.height / 2;
-        
-        // Reset points
+      // Initialize the game
+      function init() {
+        clearCanvas();
         points = [];
+        isDrawing = false;
+        scoreDisplay.textContent = '0%';
+        feedback.textContent = 'Draw a circle following the target ring';
       }
       
-      // Calculate circularity score - more forgiving algorithm
-      function calculateCircularity() {
-        if (points.length < 10) return 0;
+      // Clear the canvas
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      
+      // Mouse events
+      canvas.onmousedown = function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         
-        // Calculate the center of the drawn points
+        isDrawing = true;
+        points = [{x, y}];
+        clearCanvas();
+      };
+      
+      canvas.onmousemove = function(e) {
+        if (!isDrawing) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        points.push({x, y});
+        drawLine();
+      };
+      
+      canvas.onmouseup = function() {
+        if (isDrawing) {
+          isDrawing = false;
+          calculateScore();
+        }
+      };
+      
+      canvas.onmouseleave = function() {
+        if (isDrawing) {
+          isDrawing = false;
+          calculateScore();
+        }
+      };
+      
+      // Touch events
+      canvas.ontouchstart = function(e) {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        
+        isDrawing = true;
+        points = [{x, y}];
+        clearCanvas();
+      };
+      
+      canvas.ontouchmove = function(e) {
+        e.preventDefault();
+        if (!isDrawing) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        
+        points.push({x, y});
+        drawLine();
+      };
+      
+      canvas.ontouchend = function(e) {
+        e.preventDefault();
+        if (isDrawing) {
+          isDrawing = false;
+          calculateScore();
+        }
+      };
+      
+      // Draw line based on collected points
+      function drawLine() {
+        if (points.length < 2) return;
+        
+        clearCanvas();
+        ctx.strokeStyle = '#60a5fa';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        
+        for (let i = 1; i < points.length; i++) {
+          ctx.lineTo(points[i].x, points[i].y);
+        }
+        
+        ctx.stroke();
+      }
+      
+      // Calculate and display score
+      function calculateScore() {
+        if (points.length < 10) {
+          feedback.textContent = 'Your circle is too small. Try again!';
+          return;
+        }
+        
+        // Find center of points
         let sumX = 0, sumY = 0;
         points.forEach(point => {
           sumX += point.x;
           sumY += point.y;
         });
         
-        const avgX = sumX / points.length;
-        const avgY = sumY / points.length;
+        const pointCenterX = sumX / points.length;
+        const pointCenterY = sumY / points.length;
         
-        // Calculate the average radius
-        let sumRadius = 0;
+        // Calculate average radius
+        let totalRadius = 0;
         points.forEach(point => {
-          const dx = point.x - avgX;
-          const dy = point.y - avgY;
-          sumRadius += Math.sqrt(dx * dx + dy * dy);
+          const dx = point.x - pointCenterX;
+          const dy = point.y - pointCenterY;
+          totalRadius += Math.sqrt(dx * dx + dy * dy);
         });
         
-        const avgRadius = sumRadius / points.length;
+        const avgRadius = totalRadius / points.length;
         
-        // Calculate standard deviation of radius
-        let sumSquaredDeviations = 0;
+        // Calculate variance from average radius
+        let variance = 0;
         points.forEach(point => {
-          const dx = point.x - avgX;
-          const dy = point.y - avgY;
+          const dx = point.x - pointCenterX;
+          const dy = point.y - pointCenterY;
           const radius = Math.sqrt(dx * dx + dy * dy);
-          sumSquaredDeviations += Math.pow(radius - avgRadius, 2);
+          variance += Math.abs(radius - avgRadius);
         });
         
-        const stdDeviation = Math.sqrt(sumSquaredDeviations / points.length);
+        const avgVariance = variance / points.length;
         
-        // Calculate how close the drawn circle center is to the actual center dot
-        const centerDisplacement = Math.sqrt(
-          Math.pow(avgX - centerX, 2) + 
-          Math.pow(avgY - centerY, 2)
-        );
+        // Calculate target score - how close the average radius is to the target radius
+        const radiusDifference = Math.abs(avgRadius - targetRadius);
+        const targetDeviation = radiusDifference / targetRadius; // 0 is perfect, higher is worse
         
-        // Calculate how close the average radius is to the target distance - more forgiving
-        const distanceScore = Math.max(0, 1 - Math.abs(avgRadius - targetDistance) / (targetDistance * 1.5));
+        // Calculate circularity score
+        const circularityScore = Math.max(0, 100 - (avgVariance / avgRadius) * 150);
         
-        // Normalize standard deviation as a percentage of average radius - more forgiving
-        const normalizedDeviation = stdDeviation / avgRadius;
+        // Calculate target match score
+        const targetMatchScore = Math.max(0, 100 - targetDeviation * 100);
         
-        // Calculate circularity score with multiple factors - more forgiving weights
-        let circularityScore = 100 * (
-          0.6 * (1 - Math.min(1, normalizedDeviation * 1.2)) + // Roundness (less weight)
-          0.3 * distanceScore + // Distance from center (more weight)
-          0.1 * (1 - Math.min(1, centerDisplacement / targetDistance)) // Centering (more forgiving)
-        );
+        // Final score is weighted average of circularity and target match
+        const finalScore = Math.round((circularityScore * 0.6) + (targetMatchScore * 0.4));
         
-        // Add a base score to make it easier to get started
-        circularityScore = Math.min(100, circularityScore + 10);
+        scoreDisplay.textContent = `${finalScore}%`;
         
-        return Math.max(0, Math.min(100, circularityScore));
-      }
-      
-      // Get distance from center
-      function getDistanceFromCenter(x, y) {
-        return Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-      }
-      
-      // Calculate drawing color based on distance from center - more forgiving
-      function calculateDrawingColor(x, y) {
-        const distance = getDistanceFromCenter(x, y);
-        const deviation = Math.abs(distance - targetDistance);
-        
-        if (deviation <= distanceTolerance * 0.5) return '#00ff00'; // Green - good distance (wider range)
-        if (deviation <= distanceTolerance * 0.8) return '#ffa500'; // Orange - okay distance (wider range)
-        return '#ff0000'; // Red - bad distance
-      }
-      
-      // Redraw all points
-      function redrawPoints() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        if (points.length === 0) return;
-        
-        // Draw each point with its own color based on distance from center
-        for (let i = 0; i < points.length; i++) {
-          const point = points[i];
-          
-          // Draw point
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, 2, 0, Math.PI * 2);
-          ctx.fillStyle = point.color;
-          ctx.fill();
-          
-          // Connect points with lines
-          if (i > 0) {
-            ctx.beginPath();
-            ctx.moveTo(points[i-1].x, points[i-1].y);
-            ctx.lineTo(point.x, point.y);
-            ctx.strokeStyle = point.color;
-            ctx.lineWidth = 3;
-            ctx.stroke();
-          }
-          
-          // Connect last point to first if we have enough points
-          if (i === points.length - 1 && points.length > 10) {
-            ctx.beginPath();
-            ctx.moveTo(point.x, point.y);
-            ctx.lineTo(points[0].x, points[0].y);
-            ctx.strokeStyle = point.color;
-            ctx.lineWidth = 3;
-            ctx.stroke();
-          }
+        // Feedback based on score
+        if (finalScore >= 90) {
+          feedback.textContent = 'Excellent! Nearly perfect match to the target!';
+        } else if (finalScore >= 75) {
+          feedback.textContent = 'Great job! Very close to the target!';
+        } else if (finalScore >= 60) {
+          feedback.textContent = 'Good effort! Try to follow the target ring more closely.';
+        } else if (finalScore >= 40) {
+          feedback.textContent = 'Not bad. Focus on making your circle more even and staying on the target.';
+        } else {
+          feedback.textContent = 'Try again! Draw slowly along the dashed target line.';
         }
       }
       
-      // Get feedback text based on score - more encouraging
-      function getFeedbackText(score) {
-        if (score >= 85) return "Perfect! You're a circle master! 🏆";
-        if (score >= 75) return "Excellent! Almost perfect! 🌟";
-        if (score >= 65) return "Great job! 👏";
-        if (score >= 55) return "Good effort! 👍";
-        if (score >= 45) return "Not bad, keep practicing! 🙂";
-        if (score >= 30) return "You're getting there! Keep trying! 🤔";
-        return "That's a start! Try again for a more circular shape! 🔄";
-      }
+      // Button event listeners
+      clearButton.onclick = function() {
+        init();
+      };
       
-      // Handle both mouse and touch events
-      function getPointerPosition(e) {
-        const rect = canvas.getBoundingClientRect();
-        const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
-        const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
-        return {
-          x: clientX - rect.left,
-          y: clientY - rect.top
-        };
-      }
+      newGameButton.onclick = function() {
+        init();
+      };
       
-      // Start drawing
-      function startDrawing(e) {
-        const pos = getPointerPosition(e);
-        
-        // Start drawing
-        isDrawing = true;
-        points = []; // Clear existing points
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Add the first point with color
-        const color = calculateDrawingColor(pos.x, pos.y);
-        points.push({x: pos.x, y: pos.y, color: color});
-        
-        // Prevent default for touch events
-        if (e.type === 'touchstart' && e.preventDefault) {
-          e.preventDefault();
-        }
-      }
+      // Handle window resize
+      window.onresize = function() {
+        setCanvasSize();
+        centerX = canvas.width / 2;
+        centerY = canvas.height / 2;
+        targetRadius = parseInt(targetRing.style.width) / 2;
+        drawLine();
+      };
       
-      // Draw - smoother drawing with less throttling
-      function draw(e) {
-        if (!isDrawing) return;
-        
-        const pos = getPointerPosition(e);
-        
-        // Add point with minimal throttling to make drawing smoother
-        const lastPoint = points[points.length - 1];
-        if (!lastPoint) return;
-        
-        const distance = Math.sqrt(
-          Math.pow(pos.x - lastPoint.x, 2) + 
-          Math.pow(pos.y - lastPoint.y, 2)
-        );
-        
-        // Reduced the distance threshold to capture more points for smoother drawing
-        if (distance > 2) {
-          const color = calculateDrawingColor(pos.x, pos.y);
-          points.push({x: pos.x, y: pos.y, color: color});
-          redrawPoints();
-        }
-        
-        // Prevent default for touch events to avoid scrolling
-        if (e.type === 'touchmove' && e.preventDefault) {
-          e.preventDefault();
-        }
-      }
-      
-      // Stop drawing
-      function stopDrawing() {
-        if (!isDrawing) return;
-        isDrawing = false;
-        
-        if (points.length > 3) {
-          redrawPoints(); // Redraw with closed path
-        }
-        
-        const score = calculateCircularity();
-        scoreDisplay.textContent = `Circularity: ${score.toFixed(1)}%`;
-        feedback.textContent = getFeedbackText(score);
-      }
-      
-      // Clear canvas
-      function clearCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        points = [];
-        scoreDisplay.textContent = 'Circularity: ---';
-        feedback.textContent = 'Draw a circle to see your score!';
-      }
-    
-      
-      // Mouse events
-      canvas.addEventListener('mousedown', startDrawing);
-      canvas.addEventListener('mousemove', draw);
-      canvas.addEventListener('mouseup', stopDrawing);
-      canvas.addEventListener('mouseleave', stopDrawing);
-      
-      // Touch events
-      canvas.addEventListener('touchstart', startDrawing, {passive: false});
-      canvas.addEventListener('touchmove', draw, {passive: false});
-      canvas.addEventListener('touchend', stopDrawing);
-      canvas.addEventListener('touchcancel', stopDrawing);
-      
-      // Button events
-      clearButton.addEventListener('click', clearCanvas);
-      newGameButton.addEventListener('click', initGame);
-      
-      // Window resize event
-      window.addEventListener('resize', resizeCanvas);
-      
-      // Initialize the game
-      initGame();
-    });
+      // Start the game
+      init();
+    };
   </script>
 </body>
 </html>
